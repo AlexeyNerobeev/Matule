@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Matule</string>
+    <string name="title_activity_on_board1">OnBoard1Activity</string>
+    <string name="title_activity_on_board2">OnBoard2</string>
+    <string name="title_activity_on_board3">OnBoard3</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="title_activity_favourite">FavouriteActivity</string>
+</resources>
