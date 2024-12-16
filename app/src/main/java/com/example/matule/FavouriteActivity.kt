@@ -37,6 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
 
 class FavouriteActivity : ComponentActivity() {
@@ -49,6 +52,18 @@ class FavouriteActivity : ComponentActivity() {
             }
         }
     }
+
+}
+
+@Composable
+fun Navigate(){
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "favourite"){
+        composable("favourite") {
+            favouriteScreen()
+        }
+    }
+}
 
     @Preview
     @Composable
@@ -126,8 +141,6 @@ class FavouriteActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(0.5f)
                             .padding(end = 50.dp)){
                         IconButton(onClick = {
-                            val intent = Intent(this@FavouriteActivity, MainActivity::class.java)
-                            startActivity(intent)
                         }) {
                             Icon(painter = painterResource(R.drawable.home_bottomnav_icon),
                                 contentDescription = null)
@@ -156,4 +169,3 @@ class FavouriteActivity : ComponentActivity() {
             }
         }
     }
-}

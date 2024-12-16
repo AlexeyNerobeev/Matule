@@ -55,6 +55,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
 
 class MainActivity : ComponentActivity() {
@@ -64,6 +67,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             MatuleTheme {
                 mainScreen()
+            }
+        }
+    }
+
+    @Composable
+    fun Main(){
+        val navController = rememberNavController()
+        NavHost(navController, startDestination = "mainScreen"){
+            composable("favouriteScreen") {
+                favouriteScreen()
             }
         }
     }
