@@ -7,4 +7,5 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="title_activity_cart">CartActivity</string>
     <string name="title_activity_favourite">FavouriteActivity</string>
+    <string name="title_activity_registr_account">RegistrAccountActivity</string>
 </resources>

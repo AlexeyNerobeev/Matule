@@ -53,12 +53,12 @@ fun ProductCard() {
         colors =
             CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        val coroutine = rememberCoroutineScope()
-        LaunchedEffect(key1 = true) {
-            coroutine.launch(Dispatchers.IO) {
-                Connect.supabase.from("sneakers").select().decodeList<Sneakers>()
-            }
-        }
+//        val coroutine = rememberCoroutineScope()
+//        LaunchedEffect(key1 = true) {
+//            coroutine.launch(Dispatchers.IO) {
+//                Connect.supabase.from("sneakers").select().decodeList<Sneakers>()
+//            }
+//        }
         Column(modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)) {

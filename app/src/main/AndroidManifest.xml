@@ -15,6 +15,11 @@
         android:theme="@style/Theme.Matule"
         tools:targetApi="31">
         <activity
+            android:name=".RegistrAccountActivity"
+            android:exported="false"
+            android:label="@string/title_activity_registr_account"
+            android:theme="@style/Theme.Matule" />
+        <activity
             android:name=".FavouriteActivity"
             android:exported="false"
             android:label="@string/title_activity_favourite"

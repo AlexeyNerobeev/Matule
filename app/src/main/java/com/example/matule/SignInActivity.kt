@@ -2,6 +2,8 @@ package com.example.matule
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.SyncStateContract.Columns
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,7 +25,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +46,21 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.matule.Connect.supabase
 import com.example.matule.ui.theme.MatuleTheme
+import io.github.jan.supabase.auth.OtpType
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.realtime.Column
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,18 +68,68 @@ class SignInActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                signInScreen()
+                Navigation()
             }
         }
     }
-    fun nextPage() {
-        val intent = Intent(this@SignInActivity, MainActivity::class.java)
-        startActivity(intent)
-    }
-    @Preview
+}
+
     @Composable
-    fun signInScreen(){
-        Column(modifier = Modifier.fillMaxSize().background(Color.White),
+    fun Navigation(){
+        val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = NavRoutes.SignIn.route){
+            composable(NavRoutes.Main.route) { MainScreen() }
+            composable(NavRoutes.SignIn.route){ signInScreen(navController) }
+            composable(NavRoutes.Registration.route){ RegistrationScreen(navController)}
+        }
+    }
+
+sealed class NavRoutes(val route: String){
+    object SignIn: NavRoutes("signIn")
+    object Main: NavRoutes("main")
+    object Registration: NavRoutes("reg")
+}
+
+
+    suspend fun authorization(login: String, password: String, navController: NavController) {
+        withContext(Dispatchers.Main) {
+            try {
+                val response = supabase.postgrest["users"].select(
+                    columns = io.github.jan.supabase.postgrest.query.Columns.list("login", "password")
+                ){
+                    filter {
+                        and {
+                            eq("login", login)
+                        }
+                    }
+                }.decodeSingle<Users>()
+                if (response.login.isNotEmpty() && response.password.isNotEmpty()){
+                    if(response.password == password){
+                        navController.navigate(NavRoutes.Main.route)
+                    } else{
+
+                    }
+                } else{
+
+                }
+            } catch (er: Exception) {
+                Log.e("supa", er.message.toString())
+            }
+        }
+    }
+
+@Preview
+@Composable
+private fun Prev() {
+    val n = rememberNavController()
+    signInScreen(n)
+}
+    
+    @Composable
+    fun signInScreen(navController: NavController){
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally) {
             val font = FontFamily(
                 Font(
@@ -75,13 +144,17 @@ class SignInActivity : ComponentActivity() {
                 textAlign = TextAlign.Center,
                 color = Color.Black)
             Text(text = "Заполните Свои данные или продолжите через социальные медиа",
-                modifier = Modifier.padding(top = 8.dp).padding(horizontal = 30.dp),
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 30.dp),
                 textAlign = TextAlign.Center,
                 fontFamily = font,
                 fontSize = 16.sp,
                 fontWeight = FontWeight(400),
                 color = colorResource(R.color.sub_text_dark))
-            Column(modifier = Modifier.padding(horizontal = 20.dp).padding(top = 30.dp)) {
+            Column(modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .padding(top = 30.dp)) {
                 Text(text = "Email",
                     modifier = Modifier.align(Alignment.Start),
                     textAlign = TextAlign.Center,
@@ -95,7 +168,8 @@ class SignInActivity : ComponentActivity() {
                 OutlinedTextField(onValueChange = { newLogin ->
                     textLogin.value = newLogin
                 }, value = textLogin.value,
-                    modifier = Modifier.padding(top = 12.dp)
+                    modifier = Modifier
+                        .padding(top = 12.dp)
                         .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = tfColor,
@@ -112,7 +186,9 @@ class SignInActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 14.dp)
                     )})
                 Text(text = "Пароль",
-                    modifier = Modifier.align(Alignment.Start).padding(top = 30.dp),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(top = 30.dp),
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
                     fontFamily = font,
@@ -122,7 +198,8 @@ class SignInActivity : ComponentActivity() {
                 OutlinedTextField(onValueChange = {newPassword ->
                     passwordText.value = newPassword
                 }, value = passwordText.value,
-                    modifier = Modifier.padding(top = 12.dp)
+                    modifier = Modifier
+                        .padding(top = 12.dp)
                         .fillMaxWidth(),
                     trailingIcon = { Icon(painter = painterResource(R.drawable.eye), contentDescription = null,
                         modifier = Modifier.clickable {
@@ -144,7 +221,8 @@ class SignInActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 14.dp)
                     )})
                 Text(text = "Востановить",
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier
+                        .align(Alignment.End)
                         .padding(12.dp)
                         .clickable {
 
@@ -153,11 +231,16 @@ class SignInActivity : ComponentActivity() {
                     fontSize = 12.sp,
                     fontFamily = font,
                     color = colorResource(R.color.sub_text_dark))
+                    val coroutine = rememberCoroutineScope()
                 Button(onClick = {
-                    nextPage()
+                    coroutine.launch(Dispatchers.IO) {
+                        authorization(textLogin.value, passwordText.value, navController)
+                    }
                 },
-                    modifier = Modifier.padding(top = 24.dp)
-                        .fillMaxWidth().height(50.dp),
+                    modifier = Modifier
+                        .padding(top = 24.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(R.color.button),
@@ -172,11 +255,12 @@ class SignInActivity : ComponentActivity() {
             }
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val const1 = createRef()
-                Row(modifier = Modifier.constrainAs(const1){
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
+                Row(modifier = Modifier
+                    .constrainAs(const1) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
                     .padding(bottom = 47.dp)){
                    Text(text = "Вы впервые?",
                        fontSize = 16.sp,
@@ -189,10 +273,9 @@ class SignInActivity : ComponentActivity() {
                         fontFamily = font,
                         color = Color.Black,
                         modifier = Modifier.clickable {
-
+                            navController.navigate(NavRoutes.Registration.route)
                         })
                 }
             }
         }
     }
-}

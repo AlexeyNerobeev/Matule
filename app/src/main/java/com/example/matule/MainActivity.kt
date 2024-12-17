@@ -66,24 +66,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                mainScreen()
+                MainScreen()
             }
         }
     }
-
-    @Composable
-    fun Main(){
-        val navController = rememberNavController()
-        NavHost(navController, startDestination = "mainScreen"){
-            composable("favouriteScreen") {
-                favouriteScreen()
-            }
-        }
-    }
+}
 
     @Preview
     @Composable
-    fun mainScreen(){
+    fun MainScreen(){
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
 
@@ -280,7 +271,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxWidth()
                         .align(Alignment.BottomCenter),
                     contentScale = ContentScale.Crop)
-                IconButton(onClick = {},
+                IconButton(onClick = {
+//                    val intent = Intent(this@MainActivity, CartActivity::class.java)
+//                    startActivity(intent)
+                },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = colorResource(R.color.button),
                         contentColor = Color.White
@@ -303,8 +297,8 @@ class MainActivity : ComponentActivity() {
                                 contentDescription = null)
                         }
                         IconButton(onClick = {
-                            val intent = Intent(this@MainActivity, FavouriteActivity::class.java)
-                            startActivity(intent)
+//                            val intent = Intent(this@MainActivity, FavouriteActivity::class.java)
+//                            startActivity(intent)
                         }) {
                             Icon(painter = painterResource(R.drawable.heart_bottomnav_icon),
                                 contentDescription = null)
@@ -326,4 +320,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+
