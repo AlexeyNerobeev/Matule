@@ -51,22 +51,4 @@ Box(modifier = Modifier.fillMaxSize()
     Image(painter = painterResource(R.drawable.splash_logo), contentDescription = "logo")
 }
 }
-
-@Composable
-fun GradientBrush(
-    isVerticalGradient: Boolean,
-    colors: List<Color>
-): Brush {
-    val endOffset = if (isVerticalGradient){
-        Offset(0f, Float.POSITIVE_INFINITY)
-    } else{
-        Offset(Float.POSITIVE_INFINITY, 0f)
-    }
-
-    return Brush.linearGradient(
-        colors = colors,
-        start = Offset.Zero,
-        end = endOffset
-    )
-}
 }

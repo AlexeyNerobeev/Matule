@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -73,23 +74,6 @@ class SignInActivity : ComponentActivity() {
         }
     }
 }
-
-    @Composable
-    fun Navigation(){
-        val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = NavRoutes.SignIn.route){
-            composable(NavRoutes.Main.route) { MainScreen() }
-            composable(NavRoutes.SignIn.route){ signInScreen(navController) }
-            composable(NavRoutes.Registration.route){ RegistrationScreen(navController)}
-        }
-    }
-
-sealed class NavRoutes(val route: String){
-    object SignIn: NavRoutes("signIn")
-    object Main: NavRoutes("main")
-    object Registration: NavRoutes("reg")
-}
-
 
     suspend fun authorization(login: String, password: String, navController: NavController) {
         withContext(Dispatchers.Main) {
@@ -167,7 +151,9 @@ private fun Prev() {
                 val tfColor = colorResource(R.color.TextFieldBackground)
                 OutlinedTextField(onValueChange = { newLogin ->
                     textLogin.value = newLogin
-                }, value = textLogin.value,
+                },
+                    maxLines = 1,
+                    value = textLogin.value,
                     modifier = Modifier
                         .padding(top = 12.dp)
                         .fillMaxWidth(),
@@ -197,7 +183,9 @@ private fun Prev() {
                 val passwordText = rememberSaveable() { mutableStateOf("") }
                 OutlinedTextField(onValueChange = {newPassword ->
                     passwordText.value = newPassword
-                }, value = passwordText.value,
+                },
+                    maxLines = 1,
+                    value = passwordText.value,
                     modifier = Modifier
                         .padding(top = 12.dp)
                         .fillMaxWidth(),

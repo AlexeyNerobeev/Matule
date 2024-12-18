@@ -55,6 +55,7 @@ class DetailsActivity : ComponentActivity() {
             }
         }
     }
+}
 
     @Preview
     @Composable
@@ -175,4 +176,3 @@ class DetailsActivity : ComponentActivity() {
             }
         }
     }
-}

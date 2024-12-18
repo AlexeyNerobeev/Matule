@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.matule.ui.theme.MatuleTheme
 
 class OnBoard1Activity : ComponentActivity() {
@@ -43,20 +44,15 @@ class OnBoard1Activity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                onBoard1_Screen()
+
             }
         }
     }
-
-    fun nextPage() {
-        val intent = Intent(this@OnBoard1Activity, OnBoard2::class.java)
-        startActivity(intent)
-    }
+}
 
 
-    @Preview
     @Composable
-    fun onBoard1_Screen() {
+    fun onBoard1_Screen(navController: NavController) {
         val font = FontFamily(
             Font(
                 resId = R.font.raleway_bold
@@ -128,7 +124,9 @@ class OnBoard1Activity : ComponentActivity() {
             }
             
             Button(
-                onClick = { nextPage() }, modifier = Modifier.fillMaxWidth()
+                onClick = {
+                    navController.navigate(NavRoutes.onBoard2.route)
+                }, modifier = Modifier.fillMaxWidth()
                     .height(50.dp)
                     .padding(horizontal = 20.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -144,22 +142,3 @@ class OnBoard1Activity : ComponentActivity() {
             }
         }
     }
-
-    @Composable
-    fun gradientBrush(
-        isVerticalGradient: Boolean,
-        colors: List<Color>
-    ): Brush {
-        val endOffset = if (isVerticalGradient) {
-            Offset(0f, Float.POSITIVE_INFINITY)
-        } else {
-            Offset(Float.POSITIVE_INFINITY, 0f)
-        }
-
-        return Brush.linearGradient(
-            colors = colors,
-            start = Offset.Zero,
-            end = endOffset
-        )
-    }
-}

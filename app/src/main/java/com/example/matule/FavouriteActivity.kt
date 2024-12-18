@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -48,26 +49,21 @@ class FavouriteActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                favouriteScreen()
             }
         }
     }
 
 }
 
+@Preview
 @Composable
-fun Navigate(){
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "favourite"){
-        composable("favourite") {
-            favouriteScreen()
-        }
-    }
+fun PrevFavourite(){
+    val n = rememberNavController()
+    favouriteScreen(n)
 }
 
-    @Preview
     @Composable
-    fun favouriteScreen(){
+    fun favouriteScreen(navController: NavController){
         val font = FontFamily(
             Font(
                 resId = R.font.raleway_bold
@@ -110,7 +106,7 @@ fun Navigate(){
                     verticalItemSpacing = 15.dp
                 ) {
                     items(20){_ ->
-                        ProductCard()
+                        ProductCard(navController)
                     }
                 }
             }
@@ -125,7 +121,9 @@ fun Navigate(){
                     modifier = Modifier.fillMaxWidth()
                         .align(Alignment.BottomCenter),
                     contentScale = ContentScale.Crop)
-                IconButton(onClick = {},
+                IconButton(onClick = {
+                    navController.navigate(NavRoutes.Cart.route)
+                },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = colorResource(R.color.button),
                         contentColor = Color.White
@@ -141,6 +139,7 @@ fun Navigate(){
                         modifier = Modifier.fillMaxWidth(0.5f)
                             .padding(end = 50.dp)){
                         IconButton(onClick = {
+                            navController.navigate(NavRoutes.Main.route)
                         }) {
                             Icon(painter = painterResource(R.drawable.home_bottomnav_icon),
                                 contentDescription = null)

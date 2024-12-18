@@ -55,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -66,15 +67,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                MainScreen()
             }
         }
     }
 }
 
-    @Preview
+@Preview
+@Composable
+fun PrevMain(){
+    val n = rememberNavController()
+    MainScreen(n)
+}
+
     @Composable
-    fun MainScreen(){
+    fun MainScreen(navController: NavController){
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
 
@@ -223,8 +229,8 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ProductCard()
-                    ProductCard()
+                    ProductCard(navController)
+                    ProductCard(navController)
                 }
 
                 Row(
@@ -272,8 +278,7 @@ class MainActivity : ComponentActivity() {
                         .align(Alignment.BottomCenter),
                     contentScale = ContentScale.Crop)
                 IconButton(onClick = {
-//                    val intent = Intent(this@MainActivity, CartActivity::class.java)
-//                    startActivity(intent)
+                    navController.navigate(NavRoutes.Cart.route)
                 },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = colorResource(R.color.button),
@@ -297,8 +302,7 @@ class MainActivity : ComponentActivity() {
                                 contentDescription = null)
                         }
                         IconButton(onClick = {
-//                            val intent = Intent(this@MainActivity, FavouriteActivity::class.java)
-//                            startActivity(intent)
+                            navController.navigate(NavRoutes.Favourite.route)
                         }) {
                             Icon(painter = painterResource(R.drawable.heart_bottomnav_icon),
                                 contentDescription = null)

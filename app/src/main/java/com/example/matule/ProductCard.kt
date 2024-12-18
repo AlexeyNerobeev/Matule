@@ -21,6 +21,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,16 +37,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun ProductCard() {
+fun PrevProdCard(){
+    val n = rememberNavController()
+    ProductCard(n)
+}
+
+@Composable
+fun ProductCard(navController: NavController) {
     Card(
         onClick = {
-
+            navController.navigate(NavRoutes.Details.route)
         },
         modifier = Modifier
             .background(Color.White, shape = RoundedCornerShape(16.dp))

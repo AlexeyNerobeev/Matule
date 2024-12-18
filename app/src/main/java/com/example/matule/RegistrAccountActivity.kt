@@ -1,6 +1,7 @@
 package com.example.matule
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +43,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.util.Logger
+import com.example.matule.Connect.supabase
 import com.example.matule.ui.theme.MatuleTheme
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegistrAccountActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,11 +71,22 @@ val font = FontFamily(
 
 @Preview
 @Composable
-fun Prev1(){
+fun PrevRegistration(){
 val n = rememberNavController()
     RegistrationScreen(n)
 }
 
+suspend fun registration(login: String, password: String, navController: NavController){
+    withContext(Dispatchers.Main){
+        try {
+            val user = Users(login = login, password = password)
+            supabase.from("users").insert(user)
+            navController.navigate(NavRoutes.onBoard1.route)
+        } catch (er: Exception) {
+            Log.e("supa", er.message.toString())
+        }
+    }
+}
 
 @Composable
 fun RegistrationScreen(navController: NavController){
@@ -74,6 +94,9 @@ fun RegistrationScreen(navController: NavController){
         .fillMaxSize()
         .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally) {
+        val textName = rememberSaveable() { mutableStateOf("") }
+        val textEmail = rememberSaveable() { mutableStateOf("") }
+        val textPassword = rememberSaveable() { mutableStateOf("") }
 
         Text(
             text = "Регистрация",
@@ -104,11 +127,12 @@ fun RegistrationScreen(navController: NavController){
                 fontWeight = FontWeight(500),
                 fontFamily = font,
                 )
-            val textName = rememberSaveable() { mutableStateOf("") }
             val tfColor = colorResource(R.color.TextFieldBackground)
             OutlinedTextField(onValueChange = { newLogin ->
                 textName.value = newLogin
-            }, value = textName.value,
+            },
+                maxLines = 1,
+                value = textName.value,
                 modifier = Modifier
                     .padding(top = 12.dp)
                     .fillMaxWidth(),
@@ -131,10 +155,11 @@ fun RegistrationScreen(navController: NavController){
                 fontWeight = FontWeight(500),
                 fontSize = 16.sp,
                 fontFamily = font)
-            val textEmail = rememberSaveable() { mutableStateOf("") }
             OutlinedTextField(onValueChange = { newLogin ->
                 textEmail.value = newLogin
-            }, value = textEmail.value,
+            },
+                maxLines = 1,
+                value = textEmail.value,
                 modifier = Modifier
                     .padding(top = 12.dp)
                     .fillMaxWidth(),
@@ -158,10 +183,11 @@ fun RegistrationScreen(navController: NavController){
                 fontSize = 16.sp,
                 fontFamily = font
             )
-            val textPassword = rememberSaveable() { mutableStateOf("") }
             OutlinedTextField(onValueChange = {newPassword ->
                 textPassword.value = newPassword
-            }, value = textPassword.value,
+            },
+                maxLines = 1,
+                value = textPassword.value,
                 modifier = Modifier
                     .padding(top = 12.dp)
                     .fillMaxWidth(),
@@ -201,12 +227,15 @@ fun RegistrationScreen(navController: NavController){
             }
         }
 
+        val coroutine = rememberCoroutineScope()
         Button(modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(top = 24.dp)
             .fillMaxWidth(),
             onClick = {
-
+                coroutine.launch(Dispatchers.IO) {
+                    registration(textEmail.value, textPassword.value, navController)
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.button),
