@@ -18,6 +18,8 @@ fun Navigation(){
         composable(NavRoutes.Favourite.route) { favouriteScreen(navController)}
         composable(NavRoutes.Details.route) { detailsScreen()}
         composable(NavRoutes.Cart.route) { cartScreen()}
+        composable(NavRoutes.Profile.route) { ProfileScreen(navController)}
+        composable(NavRoutes.Notification.route) { NotificationScreen(navController)}
     }
 }
 
@@ -31,4 +33,6 @@ sealed class NavRoutes(val route: String){
     object Favourite: NavRoutes("Favourite")
     object Details: NavRoutes("Details")
     object Cart: NavRoutes("Cart")
+    object Profile: NavRoutes("Profile")
+    object Notification: NavRoutes("Notification")
 }

@@ -155,11 +155,15 @@ fun PrevFavourite(){
                     Row(horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth(1f)
                             .padding(start = 50.dp)){
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            navController.navigate(NavRoutes.Notification.route)
+                        }) {
                             Icon(painter = painterResource(R.drawable.notification_bottomnav_icon),
                                 contentDescription = null)
                         }
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            navController.navigate(NavRoutes.Profile.route)
+                        }) {
                             Icon(painter = painterResource(R.drawable.profile_bottomnav_icon),
                                 contentDescription = null)
                         }

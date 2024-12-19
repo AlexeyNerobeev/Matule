@@ -2,6 +2,7 @@ package com.example.matule
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -60,6 +61,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
+import okhttp3.Route
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +69,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
+
             }
         }
     }
@@ -311,11 +314,15 @@ fun PrevMain(){
                     Row(horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth(1f)
                             .padding(start = 50.dp)){
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            navController.navigate(NavRoutes.Notification.route)
+                        }) {
                             Icon(painter = painterResource(R.drawable.notification_bottomnav_icon),
                                 contentDescription = null)
                         }
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            navController.navigate(NavRoutes.Profile.route)
+                        }) {
                             Icon(painter = painterResource(R.drawable.profile_bottomnav_icon),
                                 contentDescription = null)
                         }

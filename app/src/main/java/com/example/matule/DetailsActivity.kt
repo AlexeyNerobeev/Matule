@@ -1,5 +1,6 @@
 package com.example.matule
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -27,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
@@ -43,7 +47,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberImagePainter
 import com.example.matule.ui.theme.MatuleTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,9 +64,27 @@ class DetailsActivity : ComponentActivity() {
     }
 }
 
+
+
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Preview
     @Composable
     fun detailsScreen(){
+
+        val coroutine = rememberCoroutineScope()
+        val detail_photo = remember { mutableStateOf("") }
+        val gender = remember { mutableStateOf("") }
+        val description = remember{ mutableStateOf("")}
+        val name = remember { mutableStateOf("") }
+        val price = remember { mutableStateOf(0f) }
+        coroutine.launch(Dispatchers.IO) {
+            detail_photo.value = res.card_photo
+            name.value = res.name
+            price.value = res.price
+            gender.value = res.gender
+            description.value = res.description
+        }
+
         val font = FontFamily(
             Font(
                 resId = R.font.raleway_bold
@@ -90,17 +115,17 @@ class DetailsActivity : ComponentActivity() {
                 }
 
                 Column(modifier = Modifier.padding(start = 20.dp).padding(top = 26.dp)) {
-                    Text(text = "Nike Air Max 270\nEssential",
+                    Text(text = name.value,
                         fontSize = 26.sp,
                         fontFamily = font,
                         fontWeight = FontWeight(700))
-                    Text(text = "Men’s Shoes",
+                    Text(text = gender.value,
                         fontSize = 16.sp,
                         fontWeight = FontWeight(500),
                         fontFamily = font,
                         color = colorResource(R.color.hint),
                         modifier = Modifier.padding(top = 8.dp))
-                    Text(text = "₽179.39",
+                    Text(text = price.value.toString(),
                         modifier = Modifier.padding(top = 8.dp),
                         fontSize = 24.sp,
                         fontWeight = FontWeight(600)
@@ -108,7 +133,7 @@ class DetailsActivity : ComponentActivity() {
                 }
 
                 Column(modifier = Modifier.padding(top = 14.dp)){
-                    Image(painter = painterResource(R.drawable.details_cross),
+                    Image(painter = rememberImagePainter(detail_photo.value),
                         contentDescription = null,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 67.dp),
                         contentScale = ContentScale.Crop)
@@ -126,7 +151,7 @@ class DetailsActivity : ComponentActivity() {
                             item{
                                 Box(modifier = Modifier.size(56.dp, 56.dp)){
                                     Image(painter = painterResource(c), contentDescription = null,
-                                        modifier = Modifier.fillMaxWidth(),
+                                        modifier = Modifier.fillMaxHeight(),
                                         contentScale = ContentScale.Crop)
                                 }
                             }
@@ -135,7 +160,7 @@ class DetailsActivity : ComponentActivity() {
                 }
 
                 Column(modifier = Modifier.padding(top = 33.dp).padding(horizontal = 20.dp)) {
-                    Text(text = "Вставка Max Air 270 обеспечивает непревзойденный комфорт в течение всего дня. Изящный дизайн ........",
+                    Text(text = description.value,
                         textAlign = TextAlign.Start,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(400),
@@ -166,7 +191,7 @@ class DetailsActivity : ComponentActivity() {
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth().padding(start = 18.dp)) {
+                            modifier = Modifier.fillMaxWidth().height(52.dp).padding(start = 18.dp)) {
                             Image(painter = painterResource(R.drawable.cart_flact_button),
                                 contentDescription = null)
                             Text(text = "В Корзину")

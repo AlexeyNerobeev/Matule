@@ -8,9 +8,9 @@ data class Sneakers(
     val id: Int,
     val name: String,
     val gender: String,
-    val price: NumericType,
+    val price: Float,
     val description: String,
     val info: String,
-    val cardPhoto: String,
-    val detailPhoto: String
+    val card_photo: String,
+    val detail_photo: String
 )

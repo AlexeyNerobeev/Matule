@@ -1,5 +1,6 @@
 package com.example.matule
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,8 +52,23 @@ fun PrevProdCard(){
     ProductCard(n)
 }
 
+
+
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProductCard(navController: NavController) {
+    val coroutine = rememberCoroutineScope()
+    val card_photo = remember { mutableStateOf("") }
+    val info = remember { mutableStateOf("") }
+    val name = remember { mutableStateOf("") }
+    val price = remember { mutableStateOf(0f) }
+    coroutine.launch(Dispatchers.IO) {
+        GetSneakers()
+        card_photo.value = res.card_photo
+        info.value = res.info
+        name.value = res.name
+        price.value = res.price
+    }
     Card(
         onClick = {
             navController.navigate(NavRoutes.Details.route)
@@ -74,13 +91,13 @@ fun ProductCard(navController: NavController) {
             .background(Color.White)) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Image(
-                    painter = painterResource(R.drawable.card_cross), contentDescription = null,
+                    painter = rememberImagePainter(card_photo.value), contentDescription = null,
                     modifier = Modifier.fillMaxWidth(),
                     contentScale = ContentScale.Crop
                 )
                 IconButton(onClick = {}) {
                     Image(
-                        painter = painterResource(R.drawable.heart_icon),
+                        painter = painterResource(R.drawable.favourite_heart_icon),
                         contentDescription = null
                     )
                 }
@@ -89,13 +106,13 @@ fun ProductCard(navController: NavController) {
                 .padding(top = 12.dp)
                 .padding(horizontal = 9.dp)) {
                 Text(
-                    text = "BEST SELLER",
+                    text = info.value,
                     color = colorResource(R.color.button),
                     fontSize = 12.sp,
                     fontWeight = FontWeight(500)
                 )
                 Text(
-                    text = "Nike Air Max",
+                    text = name.value,
                     color = colorResource(R.color.hint),
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
@@ -111,7 +128,7 @@ fun ProductCard(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "₽752.00",
+                text = price.value.toString(),
                 Modifier
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),

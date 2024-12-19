@@ -112,7 +112,6 @@ class CartActivity : ComponentActivity() {
 
                         Row(modifier = Modifier.fillMaxWidth()
                             .height(104.dp)
-                            .background(Color.White, shape = RoundedCornerShape(8.dp))
                             .draggable(
                                 orientation = Orientation.Horizontal,
                                 state = rememberDraggableState { distance ->
@@ -120,7 +119,7 @@ class CartActivity : ComponentActivity() {
                                 }
                             )) {
                             if (isSwipedRight) {
-                                Box(modifier = Modifier.size(58.dp, 104.dp)
+                                Box(modifier = Modifier.padding(end = 10.dp).size(58.dp, 104.dp)
                                     .background(colorResource(R.color.button), shape = RoundedCornerShape(8.dp))) {
                                     Column(modifier = Modifier.fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -142,6 +141,7 @@ class CartActivity : ComponentActivity() {
                             }
 
                             Box(modifier = Modifier
+                                .background(Color.White, shape = RoundedCornerShape(8.dp))
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .padding(start = if (isSwipedRight) 0.dp else 10.dp)) {
@@ -167,19 +167,18 @@ class CartActivity : ComponentActivity() {
 
                             if (isSwipedLeft) {
                                 Box(modifier = Modifier
+                                    .padding(start = 10.dp)
                                     .size(58.dp, 104.dp)
                                     .background(Color.Red, shape = RoundedCornerShape(8.dp)),
                                     contentAlignment = Alignment.Center) {
-                                    IconButton(onClick = { /* Удалить товар */ },
+                                    IconButton(onClick = {
+
+                                    },
                                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)) {
                                         Icon(painter = painterResource(R.drawable.delete_from_cart), contentDescription = null)
                                     }
                                 }
                             }
-                        }
-
-                        if (xOffset > 100 || xOffset < -100) {
-                            xOffset = 0f
                         }
                     }
                 }
