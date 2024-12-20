@@ -93,6 +93,7 @@ class SignInActivity : ComponentActivity() {
                 }.decodeSingle<Users>()
                 if (response.login.isNotEmpty() && response.password.isNotEmpty()){
                     if(response.password == password){
+                        GetUser(login)
                         navController.navigate(NavRoutes.Main.route)
                     } else{
 

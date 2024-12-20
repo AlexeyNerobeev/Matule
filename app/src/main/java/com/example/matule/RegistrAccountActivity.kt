@@ -81,6 +81,7 @@ suspend fun registration(login: String, password: String, navController: NavCont
         try {
             val user = Users(login = login, password = password)
             supabase.from("users").insert(user)
+            GetUser(user.login)
             navController.navigate(NavRoutes.onBoard1.route)
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())

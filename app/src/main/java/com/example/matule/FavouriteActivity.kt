@@ -1,5 +1,6 @@
 package com.example.matule
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -24,6 +25,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +44,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 class FavouriteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +67,7 @@ fun PrevFavourite(){
     favouriteScreen(n)
 }
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun favouriteScreen(navController: NavController){
         val font = FontFamily(
@@ -105,8 +111,10 @@ fun PrevFavourite(){
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
                     verticalItemSpacing = 15.dp
                 ) {
-                    items(20){_ ->
-                        ProductCard(navController)
+                    if(favourite.user_id == user.id){
+                        items(20){_ ->
+                            ProductCard(navController)
+                        }
                     }
                 }
             }

@@ -6,24 +6,25 @@ import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-var sneakers: Sneakers = Sneakers(0, "", "", 0f, "", "", "", "")
+var user = Users(0, "", "")
 
-suspend fun GetSneakers(){
+suspend fun GetUser(login: String) {
     withContext(Dispatchers.IO) {
         try {
-            val response = supabase.postgrest["sneakers"].select(
+            val response = supabase.postgrest["users"].select(
                 columns = io.github.jan.supabase.postgrest.query.Columns.list(
                     "id",
-                    "name",
-                    "gender",
-                    "price",
-                    "description",
-                    "info",
-                    "card_photo",
-                    "detail_photo"
+                    "login",
+                    "password"
                 )
-            ).decodeSingle<Sneakers>()
-            sneakers = response
+            ){
+                filter {
+                    and{
+                        eq("login", login)
+                    }
+                }
+            }.decodeSingle<Users>()
+            user = response
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())
         }

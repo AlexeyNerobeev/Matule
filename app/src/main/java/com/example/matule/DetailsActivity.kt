@@ -78,11 +78,11 @@ class DetailsActivity : ComponentActivity() {
         val name = remember { mutableStateOf("") }
         val price = remember { mutableStateOf(0f) }
         coroutine.launch(Dispatchers.IO) {
-            detail_photo.value = res.card_photo
-            name.value = res.name
-            price.value = res.price
-            gender.value = res.gender
-            description.value = res.description
+            detail_photo.value = sneakers.card_photo
+            name.value = sneakers.name
+            price.value = sneakers.price
+            gender.value = sneakers.gender
+            description.value = sneakers.description
         }
 
         val font = FontFamily(

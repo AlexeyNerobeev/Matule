@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,6 +58,7 @@ fun PrevProdCard(){
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProductCard(navController: NavController) {
+    val icon_id = remember { mutableIntStateOf(R.drawable.heart_icon) }
     val coroutine = rememberCoroutineScope()
     val card_photo = remember { mutableStateOf("") }
     val info = remember { mutableStateOf("") }
@@ -64,10 +66,14 @@ fun ProductCard(navController: NavController) {
     val price = remember { mutableStateOf(0f) }
     coroutine.launch(Dispatchers.IO) {
         GetSneakers()
-        card_photo.value = res.card_photo
-        info.value = res.info
-        name.value = res.name
-        price.value = res.price
+        GetFavourite()
+        if (favourite.user_id == user.id){
+            icon_id.value = R.drawable.favourite_heart_icon
+        }
+            card_photo.value = sneakers.card_photo
+            info.value = sneakers.info
+            name.value = sneakers.name
+            price.value = sneakers.price
     }
     Card(
         onClick = {
@@ -80,12 +86,6 @@ fun ProductCard(navController: NavController) {
         colors =
             CardDefaults.cardColors(containerColor = Color.White)
     ) {
-//        val coroutine = rememberCoroutineScope()
-//        LaunchedEffect(key1 = true) {
-//            coroutine.launch(Dispatchers.IO) {
-//                Connect.supabase.from("sneakers").select().decodeList<Sneakers>()
-//            }
-//        }
         Column(modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)) {
@@ -95,9 +95,21 @@ fun ProductCard(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     contentScale = ContentScale.Crop
                 )
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                if(icon_id.value == R.drawable.heart_icon){
+                    icon_id.value = R.drawable.favourite_heart_icon
+                    coroutine.launch {
+                        AddFavourite()
+                    }
+                } else{
+                    icon_id.value = R.drawable.heart_icon
+                    coroutine.launch {
+                        DeleteFavourite()
+                    }
+                }
+                }) {
                     Image(
-                        painter = painterResource(R.drawable.favourite_heart_icon),
+                        painter = painterResource(icon_id.value),
                         contentDescription = null
                     )
                 }
