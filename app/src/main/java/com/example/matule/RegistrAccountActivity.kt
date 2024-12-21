@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,10 +81,15 @@ val n = rememberNavController()
 suspend fun registration(login: String, password: String, navController: NavController){
     withContext(Dispatchers.Main){
         try {
-            val user = Users(login = login, password = password)
-            supabase.from("users").insert(user)
-            GetUser(user.login)
-            navController.navigate(NavRoutes.onBoard1.route)
+            if (login.isNotEmpty() && password.isNotEmpty()){
+                val user = Users(login = login, password = password)
+                supabase.from("users").insert(user)
+                GetUser(user.login)
+                GetSneakers()
+                navController.navigate(NavRoutes.onBoard1.route)
+            } else{
+
+            }
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())
         }

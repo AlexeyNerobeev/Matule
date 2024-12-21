@@ -58,23 +58,23 @@ fun PrevProdCard(){
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProductCard(navController: NavController) {
+    val cart_icon = remember{ mutableIntStateOf(R.drawable.plus)}
     val icon_id = remember { mutableIntStateOf(R.drawable.heart_icon) }
     val coroutine = rememberCoroutineScope()
     val card_photo = remember { mutableStateOf("") }
     val info = remember { mutableStateOf("") }
     val name = remember { mutableStateOf("") }
     val price = remember { mutableStateOf(0f) }
-    coroutine.launch(Dispatchers.IO) {
-        GetSneakers()
-        GetFavourite()
-        if (favourite.user_id == user.id){
-            icon_id.value = R.drawable.favourite_heart_icon
-        }
-            card_photo.value = sneakers.card_photo
-            info.value = sneakers.info
-            name.value = sneakers.name
-            price.value = sneakers.price
+    if (favourite.user_id == user.id){
+        icon_id.value = R.drawable.favourite_heart_icon
     }
+    if (cart.user_id == user.id){
+        cart_icon.value = R.drawable.cart
+    }
+    card_photo.value = sneakers.card_photo
+    info.value = sneakers.info
+    name.value = sneakers.name
+    price.value = sneakers.price
     Card(
         onClick = {
             navController.navigate(NavRoutes.Details.route)
@@ -100,11 +100,13 @@ fun ProductCard(navController: NavController) {
                     icon_id.value = R.drawable.favourite_heart_icon
                     coroutine.launch {
                         AddFavourite()
+                        GetFavourite()
                     }
                 } else{
                     icon_id.value = R.drawable.heart_icon
                     coroutine.launch {
                         DeleteFavourite()
+                        GetFavourite()
                     }
                 }
                 }) {
@@ -152,7 +154,21 @@ fun ProductCard(navController: NavController) {
                 .fillMaxSize(),
                 contentAlignment = Alignment.BottomEnd) {
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        if(cart_icon.value == R.drawable.plus){
+                            cart_icon.value = R.drawable.cart
+                            coroutine.launch {
+                                AddCart()
+                                GetCart()
+                            }
+                        } else{
+                            cart_icon.value = R.drawable.plus
+                            coroutine.launch {
+                                DelCart()
+                                GetCart()
+                            }
+                        }
+                    },
                     modifier = Modifier.align(Alignment.BottomEnd)
                         .size(34.dp, 34.dp)
                         .clip(RoundedCornerShape(topStart = 16.dp))
@@ -161,7 +177,7 @@ fun ProductCard(navController: NavController) {
                     )
                 ) {
                     Image(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(cart_icon.value),
                         contentDescription = "add",
                         colorFilter = ColorFilter.tint(Color.White),
                         modifier = Modifier.offset(-3.dp, -3.dp)

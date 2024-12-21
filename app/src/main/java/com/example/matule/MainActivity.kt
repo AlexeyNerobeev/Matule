@@ -102,7 +102,9 @@ fun PrevMain(){
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigate(NavRoutes.SideMenu.route)
+                    }) {
                         Image(
                             painter = painterResource(R.drawable.menu_icon),
                             contentDescription = null

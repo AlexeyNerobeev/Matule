@@ -94,6 +94,9 @@ class SignInActivity : ComponentActivity() {
                 if (response.login.isNotEmpty() && response.password.isNotEmpty()){
                     if(response.password == password){
                         GetUser(login)
+                        GetSneakers()
+                        GetFavourite()
+                        GetCart()
                         navController.navigate(NavRoutes.Main.route)
                     } else{
 

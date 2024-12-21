@@ -1,39 +1,38 @@
 package com.example.matule
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.example.matule.Connect.supabase
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-var favourite: Favourite = Favourite(0, 0, 0)
+var cart: Cart = Cart(0, 0, 0, 0)
 
-@SuppressLint("SuspiciousIndentation")
-suspend fun GetFavourite() {
+suspend fun GetCart() {
     withContext(Dispatchers.IO) {
         try {
-            val response = supabase.postgrest["favourite"].select(
+            val response = supabase.postgrest["cart"].select(
                 columns = io.github.jan.supabase.postgrest
                     .query.Columns.list(
-                    "id",
-                    "sneaker_id",
-                    "user_id"
-                )
+                        "id",
+                        "user_id",
+                        "sneaker_id",
+                        "count"
+                    )
             ){
                 filter {
                     and {
                         eq("user_id", user.id)
                     }
                 }
-            }.decodeSingle<Favourite>()
+            }.decodeSingle<Cart>()
             if(response.user_id.toString().isNotEmpty()){
-                favourite = response
+                cart = response
             }
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())
             if (er.message.toString() == "List is empty.")
-            favourite = Favourite(0, 0, 0)
+                cart = Cart(0, 0, 0, 1)
         }
     }
 }
