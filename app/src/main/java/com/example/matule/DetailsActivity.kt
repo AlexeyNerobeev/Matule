@@ -21,22 +21,19 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -47,6 +44,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.matule.ui.theme.MatuleTheme
 import kotlinx.coroutines.Dispatchers
@@ -58,25 +57,36 @@ class DetailsActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                detailsScreen()
             }
         }
     }
 }
 
-
+@Preview
+@Composable
+fun PrevDetails(){
+    val n = rememberNavController()
+    detailsScreen(n)
+}
 
     @SuppressLint("CoroutineCreationDuringComposition")
-    @Preview
     @Composable
-    fun detailsScreen(){
+    fun detailsScreen(navController: NavController){
 
+        val icon_id = remember { mutableIntStateOf(R.drawable.heart_icon) }
         val coroutine = rememberCoroutineScope()
         val detail_photo = remember { mutableStateOf("") }
         val gender = remember { mutableStateOf("") }
         val description = remember{ mutableStateOf("")}
         val name = remember { mutableStateOf("") }
         val price = remember { mutableStateOf(0f) }
+        val textCart = remember { mutableStateOf("В корзину") }
+        if (favourite.user_id == user.id){
+            icon_id.value = R.drawable.favourite_heart_icon
+        }
+        if (cart.user_id == user.id) {
+            textCart.value = "В корзине"
+        }
         coroutine.launch(Dispatchers.IO) {
             detail_photo.value = sneakers.card_photo
             name.value = sneakers.name
@@ -180,12 +190,36 @@ class DetailsActivity : ComponentActivity() {
                         .constrainAs(const){
                             bottom.linkTo(parent.bottom)
                         }){
-                        IconButton(onClick = {},
+                        IconButton(onClick = {
+                            if(icon_id.value == R.drawable.heart_icon){
+                                icon_id.value = R.drawable.favourite_heart_icon
+                                coroutine.launch {
+                                    AddFavourite()
+                                    GetFavourite()
+                                }
+                            } else{
+                                icon_id.value = R.drawable.heart_icon
+                                coroutine.launch {
+                                    DeleteFavourite()
+                                    GetFavourite()
+                                }
+                            }
+                        },
                             modifier = Modifier.size(52.dp, 52.dp)){
-                            Image(painter = painterResource(R.drawable.heart_icon),
+                            Image(painter = painterResource(icon_id.value),
                                 contentDescription = null)
                         }
-                        Button(onClick = {},
+                        Button(onClick = {
+                            if(textCart.value == "В корзину"){
+                                textCart.value = "В корзине"
+                                coroutine.launch {
+                                    AddCart()
+                                    GetCart()
+                                }
+                            } else{
+                                navController.navigate(NavRoutes.Cart.route)
+                            }
+                        },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = colorResource(R.color.button),
                                 contentColor = Color.White
@@ -194,7 +228,7 @@ class DetailsActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth().height(52.dp).padding(start = 18.dp)) {
                             Image(painter = painterResource(R.drawable.cart_flact_button),
                                 contentDescription = null)
-                            Text(text = "В Корзину")
+                            Text(text = textCart.value)
                         }
                     }
                 }

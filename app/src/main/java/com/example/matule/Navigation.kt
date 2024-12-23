@@ -16,11 +16,12 @@ fun Navigation(){
         composable(NavRoutes.onBoard2.route) { onBoardScreen2(navController)}
         composable(NavRoutes.onBoard3.route) { onBoard3Screen(navController)}
         composable(NavRoutes.Favourite.route) { favouriteScreen(navController)}
-        composable(NavRoutes.Details.route) { detailsScreen()}
-        composable(NavRoutes.Cart.route) { cartScreen()}
+        composable(NavRoutes.Details.route) { detailsScreen(navController)}
+        composable(NavRoutes.Cart.route) { cartScreen(navController)}
         composable(NavRoutes.Profile.route) { ProfileScreen(navController)}
         composable(NavRoutes.Notification.route) { NotificationScreen(navController)}
         composable(NavRoutes.SideMenu.route) { SideMenuScreen(navController)}
+        composable(NavRoutes.EditProfile.route) { EditProfileScreen(navController)}
     }
 }
 
@@ -37,4 +38,5 @@ sealed class NavRoutes(val route: String){
     object Profile: NavRoutes("Profile")
     object Notification: NavRoutes("Notification")
     object SideMenu: NavRoutes("SideMenu")
+    object EditProfile: NavRoutes("EditProfile")
 }

@@ -77,10 +77,14 @@ fun OnBoard1_Screen() {
                 Image(painter = painterResource(R.drawable.undercrosslines), contentDescription = null,
                     modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 100.dp))
             }
+    }
 
+    Box(modifier = Modifier.fillMaxSize()){
         Button(onClick = {}, modifier = Modifier.fillMaxWidth()
-            .height(50.dp)
-            .padding(start = 20.dp, end = 20.dp),
+            .height(86.dp)
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 36.dp)
+            .align(Alignment.BottomCenter),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
                 containerColor = Color.White

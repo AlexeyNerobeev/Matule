@@ -72,7 +72,7 @@ fun SideMenuScreen(navController: NavController) {
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier.clickable {
-                                    navController.navigate(NavRoutes.Profile.route)
+                                    navController.navigate(NavRoutes.EditProfile.route)
                                 }) {
                                 Icon(
                                     painter = painterResource(R.drawable.profile_bottomnav_icon),

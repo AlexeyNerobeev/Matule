@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
 
 class OnBoard3 : ComponentActivity() {
@@ -46,6 +48,14 @@ class OnBoard3 : ComponentActivity() {
         }
     }
 }
+
+@Preview
+@Composable
+fun PrevOnB3(){
+    val n = rememberNavController()
+    onBoard3Screen(n)
+}
+
 
 @Composable
 fun onBoard3Screen(navController: NavController){
@@ -92,18 +102,22 @@ fun onBoard3Screen(navController: NavController){
         Image(painter = painterResource(R.drawable.pagelunes_onb3),
             contentDescription = null,
             modifier = Modifier.padding(top = 40.dp))
+    }
+    Box(modifier = Modifier.fillMaxSize()){
         Button(onClick = {
             navController.navigate(NavRoutes.Main.route)
-        },
+        }, modifier = Modifier.fillMaxWidth()
+            .height(86.dp)
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 36.dp)
+            .align(Alignment.BottomCenter),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
+                contentColor = Color.Black,
+                containerColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth().padding(top = 95.dp)
-                .padding(horizontal = 20.dp),
-            shape = RoundedCornerShape(13.dp)
-        ) {
-            Text(text = "Далее")
+            shape = RoundedCornerShape(13.dp)) {
+            Text(text = "Далее", fontSize = 14.sp,
+                fontFamily = font, fontWeight = FontWeight(600))
         }
     }
 }

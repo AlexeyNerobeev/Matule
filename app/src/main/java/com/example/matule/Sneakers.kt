@@ -1,6 +1,5 @@
 package com.example.matule
 
-import android.icu.lang.UCharacter.NumericType
 import kotlinx.serialization.Serializable
 
 @Serializable

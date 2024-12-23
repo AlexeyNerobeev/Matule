@@ -1,5 +1,6 @@
 package com.example.matule
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,9 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -43,8 +49,20 @@ fun PrevNotification(){
     NotificationScreen(n)
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun NotificationScreen(navController: NavController) {
+    val created_at = remember { mutableStateOf("") }
+    val heading = remember{ mutableStateOf("")}
+    val text = remember { mutableStateOf("") }
+    val coroutine = rememberCoroutineScope()
+    coroutine.launch(Dispatchers.IO) {
+        GetNotification()
+        created_at.value = notification.created_at
+        heading.value = notification.heading
+        text.value = notification.text
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()
         .background(Color.White)) { innerPadding ->
         val font = FontFamily(
@@ -55,36 +73,47 @@ fun NotificationScreen(navController: NavController) {
         LazyColumn(modifier = Modifier.fillMaxSize().padding(innerPadding)
             .padding(horizontal = 20.dp)
             .background(Color.White)) {
-            items(15){
-                Box(modifier = Modifier
-                    .padding(top = 12.dp)
-                    .fillMaxWidth()
-                    .background(colorResource(R.color.MainBackground),
-                        shape = RoundedCornerShape(12.dp))){
-                    Column(modifier = Modifier.padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)) {
-                        Text(text = "Заголовок",
-                            color = Color.Black,
-                            fontSize = 16.sp,
-                            fontFamily = font,
-                            fontWeight = FontWeight(700)
-                        )
-                        Text(text = "Lorem ipsum dolor sit amet consectetur. Venenatis pulvinar lobortis risus consectetur morbi egestas id in bibendum. Volutpat nulla urna sit sed diam nulla.",
-                            modifier = Modifier.padding(top = 8.dp),
-                            textAlign = TextAlign.Start,
-                            color = Color.Black,
-                            fontSize = 12.sp,
-                            fontFamily = font,
-                            fontWeight = FontWeight(500)
-                        )
-                        Text(text = "27.01.2024, 15:42",
-                            modifier = Modifier.padding(top = 16.dp)
-                                .padding(bottom = 16.dp),
-                            color = colorResource(R.color.sub_text_dark),
-                            fontFamily = font,
-                            fontWeight = FontWeight(500),
-                            fontSize = 12.sp
-                        )
+            if(heading.value.isNotEmpty()) {
+                items(15) {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .fillMaxWidth()
+                            .background(
+                                colorResource(R.color.MainBackground),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                                .padding(top = 16.dp)
+                        ) {
+                            Text(
+                                text = heading.value,
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontFamily = font,
+                                fontWeight = FontWeight(700)
+                            )
+                            Text(
+                                text = text.value,
+                                modifier = Modifier.padding(top = 8.dp),
+                                textAlign = TextAlign.Start,
+                                color = Color.Black,
+                                fontSize = 12.sp,
+                                fontFamily = font,
+                                fontWeight = FontWeight(500)
+                            )
+                            Text(
+                                text = created_at.value,
+                                modifier = Modifier.padding(top = 16.dp)
+                                    .padding(bottom = 16.dp),
+                                color = colorResource(R.color.sub_text_dark),
+                                fontFamily = font,
+                                fontWeight = FontWeight(500),
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
             }

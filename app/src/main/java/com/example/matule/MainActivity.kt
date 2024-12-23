@@ -37,7 +37,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -122,7 +124,9 @@ fun PrevMain(){
                             fontFamily = font
                         )
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigate(NavRoutes.Cart.route)
+                    }) {
                         Image(
                             painter = painterResource(R.drawable.cart_topbar),
                             contentDescription = null,
@@ -189,26 +193,92 @@ fun PrevMain(){
                         fontWeight = FontWeight(600),
                         modifier = Modifier.align(Alignment.Start)
                     )
+                    val buttonColor = remember { mutableIntStateOf(R.color.white) }
+                    val textButtonColor = remember { mutableIntStateOf(R.color.black) }
+                    val buttonColor2 = remember { mutableIntStateOf(R.color.white) }
+                    val textButtonColor2 = remember { mutableIntStateOf(R.color.black) }
+                    val buttonColor3 = remember { mutableIntStateOf(R.color.white) }
+                    val textButtonColor3 = remember { mutableIntStateOf(R.color.black) }
                     LazyRow(modifier = Modifier.padding(top = 16.dp).fillMaxWidth()) {
-                        val textButtons = listOf("Все", "Outdoor", "Tennis")
-                        for (text in textButtons) {
                             item {
                                 Button(
-                                    onClick = {},
+                                    onClick = {
+                                        if (buttonColor.value == R.color.white &&
+                                            textButtonColor.value == R.color.black){
+                                            buttonColor.value = R.color.button
+                                            textButtonColor.value = R.color.white
+                                        } else{
+                                            textButtonColor.value = R.color.black
+                                            buttonColor.value = R.color.white
+                                        }
+                                    },
                                     colors = ButtonDefaults.buttonColors(
-                                        contentColor = Color.Black,
-                                        containerColor = Color.White
+                                        contentColor = colorResource(textButtonColor.value),
+                                        containerColor = colorResource(buttonColor.value)
                                     ),
-                                    modifier = Modifier.size(110.dp, 40.dp).padding(end = 16.dp),
+                                    modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
                                     Text(
-                                        text = text,
+                                        text = "Все",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight(400),
                                         fontFamily = font
                                     )
                                 }
+                            }
+                        item {
+                            Button(
+                                onClick = {
+                                    if (buttonColor2.value == R.color.white &&
+                                        textButtonColor2.value == R.color.black){
+                                        buttonColor2.value = R.color.button
+                                        textButtonColor2.value = R.color.white
+                                    } else{
+                                        textButtonColor2.value = R.color.black
+                                        buttonColor2.value = R.color.white
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    contentColor = colorResource(textButtonColor2.value),
+                                    containerColor = colorResource(buttonColor2.value)
+                                ),
+                                modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text(
+                                    text = "Outdoor",
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight(400),
+                                    fontFamily = font
+                                )
+                            }
+                        }
+                        item {
+                            Button(
+                                onClick = {
+                                    if (buttonColor3.value == R.color.white &&
+                                        textButtonColor3.value == R.color.black){
+                                        buttonColor3.value = R.color.button
+                                        textButtonColor3.value = R.color.white
+                                    } else{
+                                        textButtonColor3.value = R.color.black
+                                        buttonColor3.value = R.color.white
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    contentColor = colorResource(textButtonColor3.value),
+                                    containerColor = colorResource(buttonColor3.value)
+                                ),
+                                modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text(
+                                    text = "Tennis",
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight(400),
+                                    fontFamily = font
+                                )
                             }
                         }
                     }

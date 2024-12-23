@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,11 +20,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -37,7 +34,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,11 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.util.Logger
 import com.example.matule.Connect.supabase
 import com.example.matule.ui.theme.MatuleTheme
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,7 +72,8 @@ val n = rememberNavController()
     RegistrationScreen(n)
 }
 
-suspend fun registration(login: String, password: String, navController: NavController){
+suspend fun registration(login: String, password: String, navController: NavController,
+                         name: String){
     withContext(Dispatchers.Main){
         try {
             if (login.isNotEmpty() && password.isNotEmpty()){
@@ -86,6 +81,7 @@ suspend fun registration(login: String, password: String, navController: NavCont
                 supabase.from("users").insert(user)
                 GetUser(user.login)
                 GetSneakers()
+                AddProfile(name)
                 navController.navigate(NavRoutes.onBoard1.route)
             } else{
 
@@ -242,7 +238,8 @@ fun RegistrationScreen(navController: NavController){
             .fillMaxWidth(),
             onClick = {
                 coroutine.launch(Dispatchers.IO) {
-                    registration(textEmail.value, textPassword.value, navController)
+                    registration(textEmail.value, textPassword.value, navController,
+                        textName.value)
                 }
             },
             colors = ButtonDefaults.buttonColors(

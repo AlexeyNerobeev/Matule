@@ -5,10 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.collection.mutableIntSetOf
+import androidx.collection.mutableFloatSetOf
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -22,13 +23,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -38,6 +36,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +44,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -59,6 +57,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,25 +69,32 @@ class CartActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                cartScreen()
             }
         }
     }
 }
 
+@Preview
+@Composable
+fun PrevCart(){
+    val n = rememberNavController()
+    cartScreen(n)
+}
+
     @SuppressLint("CoroutineCreationDuringComposition")
-    @Preview
     @Composable
-    fun cartScreen(){
+    fun cartScreen(navController: NavController){
 
         val coroutine = rememberCoroutineScope()
         val itemsCount = remember { mutableIntStateOf(0) }
         val name = remember { mutableStateOf("") }
-        val price = remember{ mutableStateOf("") }
+        val price = remember{ mutableFloatStateOf(0f) }
+        val sum = remember { mutableFloatStateOf(0f) }
+        val orderSum = remember { mutableFloatStateOf(60.20f) }
         if(user.id == cart.user_id){
             itemsCount.value = cart.count
             name.value = sneakers.name
-            price.value = sneakers.price.toString()
+            price.value = sneakers.price
         }
 
         val font = FontFamily(
@@ -202,7 +209,10 @@ class CartActivity : ComponentActivity() {
                                             .fillMaxHeight()
                                             .padding(start = if (isSwipedRight) 0.dp else 10.dp)
                                     ) {
-                                        Row(modifier = Modifier.fillMaxSize()) {
+                                        Row(modifier = Modifier.fillMaxSize()
+                                            .clickable {
+                                                navController.navigate(NavRoutes.Details.route)
+                                            }) {
                                             Image(
                                                 painter = painterResource(R.drawable.cart_cross),
                                                 contentDescription = null,
@@ -224,7 +234,7 @@ class CartActivity : ComponentActivity() {
                                                     fontWeight = FontWeight(500)
                                                 )
                                                 Text(
-                                                    text = price.value,
+                                                    text = price.value.toString(),
                                                     modifier = Modifier.padding(top = 6.dp),
                                                     fontSize = 14.sp,
                                                     fontWeight = FontWeight(500)
@@ -284,7 +294,8 @@ class CartActivity : ComponentActivity() {
                                     fontWeight = FontWeight(500),
                                     fontSize = 16.sp,
                                     color = colorResource(R.color.sub_text_dark))
-                                Text(text = "₽753.95",
+                                sum.value = price.value * itemsCount.value
+                                Text(text = "₽${sum.value}",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500)
                                 )
@@ -297,7 +308,7 @@ class CartActivity : ComponentActivity() {
                                     fontWeight = FontWeight(500),
                                     fontSize = 16.sp,
                                     color = colorResource(R.color.sub_text_dark))
-                                Text(text = "₽60.20",
+                                Text(text = "₽${orderSum.value}",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500)
                                 )
@@ -320,7 +331,7 @@ class CartActivity : ComponentActivity() {
                                     fontWeight = FontWeight(500),
                                     fontFamily = font
                                 )
-                                Text(text = "₽814.15",
+                                Text(text = "₽${sum.value + orderSum.value}",
                                     color = colorResource(R.color.button),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500)

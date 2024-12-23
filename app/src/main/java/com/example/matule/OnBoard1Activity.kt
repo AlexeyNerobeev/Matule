@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.matule.ui.theme.MatuleTheme
 
 class OnBoard1Activity : ComponentActivity() {
@@ -50,6 +51,12 @@ class OnBoard1Activity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun PrevOnB1(){
+    val n = rememberNavController()
+    onBoard1_Screen(n)
+}
 
     @Composable
     fun onBoard1_Screen(navController: NavController) {
@@ -122,23 +129,22 @@ class OnBoard1Activity : ComponentActivity() {
                     modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 100.dp)
                 )
             }
-            
-            Button(
-                onClick = {
-                    navController.navigate(NavRoutes.onBoard2.route)
-                }, modifier = Modifier.fillMaxWidth()
-                    .height(50.dp)
-                    .padding(horizontal = 20.dp),
+        }
+        Box(modifier = Modifier.fillMaxSize()){
+            Button(onClick = {
+                navController.navigate(NavRoutes.onBoard2.route)
+            }, modifier = Modifier.fillMaxWidth()
+                .height(86.dp)
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 36.dp)
+                .align(Alignment.BottomCenter),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.Black,
                     containerColor = Color.White
                 ),
-                shape = RoundedCornerShape(13.dp)
-            ) {
-                Text(
-                    text = "Начать", fontSize = 14.sp,
-                    fontFamily = font, fontWeight = FontWeight(600)
-                )
+                shape = RoundedCornerShape(13.dp)) {
+                Text(text = "Начать", fontSize = 14.sp,
+                    fontFamily = com.example.matule.font, fontWeight = FontWeight(600))
             }
         }
     }

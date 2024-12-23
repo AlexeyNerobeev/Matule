@@ -1,5 +1,6 @@
 package com.example.matule
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -24,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -45,8 +52,24 @@ fun PrevProfile(){
     ProfileScreen(n)
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProfileScreen(navController: NavController) {
+    val photo = remember { mutableStateOf("") }
+    val name = remember { mutableStateOf("") }
+    val surname = remember{ mutableStateOf("")}
+    val adress = remember { mutableStateOf("") }
+    val phone = remember{ mutableStateOf("")}
+    val coroutine = rememberCoroutineScope()
+    coroutine.launch(Dispatchers.IO) {
+        GetProfile()
+        photo.value = profile.photo
+        name.value = profile.name
+        surname.value = profile.surname
+        adress.value = profile.adress
+        phone.value = profile.phone
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).fillMaxSize().background(Color.White)
@@ -71,11 +94,11 @@ fun ProfileScreen(navController: NavController) {
                     modifier = Modifier.padding(start = 100.dp)
                 )
             }
-            Image(painter = painterResource(R.drawable.profile_image),
+            Image(painter = rememberImagePainter(photo.value),
                 contentDescription = null,
                 modifier = Modifier.padding(top = 48.dp)
                     .size(96.dp, 96.dp))
-            Text(text = "Emmanuel Oyiboke",
+            Text(text = "${name.value} ${surname.value}",
                 modifier = Modifier.padding(top = 8.dp),
                 color = Color.Black,
                 fontWeight = FontWeight(600),
@@ -103,12 +126,11 @@ fun ProfileScreen(navController: NavController) {
                             fontFamily = font,
                             fontWeight = FontWeight(600)
                         )
-                        val textName = remember{ mutableStateOf("")}
                         OutlinedTextField(onValueChange = {newTextName ->
-                            textName.value = newTextName
+                            name.value = newTextName
                         },
                             maxLines = 1,
-                            value = textName.value,
+                            value = name.value,
                             modifier = Modifier
                                 .padding(top = 12.dp)
                                 .fillMaxWidth(),
@@ -142,12 +164,11 @@ fun ProfileScreen(navController: NavController) {
                             fontFamily = font,
                             fontWeight = FontWeight(600)
                         )
-                        val textSurname = remember{ mutableStateOf("")}
                         OutlinedTextField(onValueChange = {newTextSurname ->
-                            textSurname.value = newTextSurname
+                            surname.value = newTextSurname
                         },
                             maxLines = 1,
-                            value = textSurname.value,
+                            value = surname.value,
                             modifier = Modifier
                                 .padding(top = 12.dp)
                                 .fillMaxWidth(),
@@ -181,12 +202,11 @@ fun ProfileScreen(navController: NavController) {
                             fontFamily = font,
                             fontWeight = FontWeight(600)
                         )
-                        val textAdress = remember{ mutableStateOf("")}
                         OutlinedTextField(onValueChange = {newTextAdress ->
-                            textAdress.value = newTextAdress
+                            adress.value = newTextAdress
                         },
                             maxLines = 1,
-                            value = textAdress.value,
+                            value = adress.value,
                             modifier = Modifier
                                 .padding(top = 12.dp)
                                 .fillMaxWidth(),
@@ -220,12 +240,11 @@ fun ProfileScreen(navController: NavController) {
                             fontFamily = font,
                             fontWeight = FontWeight(600)
                         )
-                        val textPhone = remember{ mutableStateOf("")}
                         OutlinedTextField(onValueChange = {newTextPhone ->
-                            textPhone.value = newTextPhone
+                            phone.value = newTextPhone
                         },
                             maxLines = 1,
-                            value = textPhone.value,
+                            value = phone.value,
                             modifier = Modifier
                                 .padding(top = 12.dp)
                                 .fillMaxWidth(),
@@ -249,7 +268,32 @@ fun ProfileScreen(navController: NavController) {
                                 fontWeight = FontWeight(500),
                                 modifier = Modifier.padding(start = 14.dp)
                             )})
+                        Button(onClick = {
+                            coroutine.launch(Dispatchers.IO) {
+                                UpdateProfile(name.value, surname.value,
+                                    adress = adress.value, phone.value)
+                            }
+                        },
+                            modifier = Modifier.padding(top = 16.dp)
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.button),
+                                contentColor = Color.White
+                            )) {
+                            Text(text = "Сохранить",
+                                fontSize = 14.sp,
+                                fontFamily = font,
+                                fontWeight = FontWeight(500)
+                            )
+                        }
                     }
+                }
+                item{
+                    Box(modifier = Modifier.padding(top = 16.dp)
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .background(Color.White))
                 }
             }
         }
