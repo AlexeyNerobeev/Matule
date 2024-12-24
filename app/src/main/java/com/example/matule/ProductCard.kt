@@ -140,7 +140,8 @@ fun ProductCard(navController: NavController) {
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),
                 fontSize = 14.sp,
-                fontWeight = FontWeight(500)
+                fontWeight = FontWeight(500),
+                color = Color.Black
             )
 
             Box(modifier = Modifier

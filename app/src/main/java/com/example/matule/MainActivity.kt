@@ -12,7 +12,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -121,7 +123,8 @@ fun PrevMain(){
                             text = "Главная",
                             fontSize = 32.sp,
                             fontWeight = FontWeight(700),
-                            fontFamily = font
+                            fontFamily = font,
+                            color = Color.Black
                         )
                     }
                     IconButton(onClick = {
@@ -191,6 +194,7 @@ fun PrevMain(){
                         fontSize = 16.sp,
                         fontFamily = font,
                         fontWeight = FontWeight(600),
+                        color = Color.Black,
                         modifier = Modifier.align(Alignment.Start)
                     )
                     val buttonColor = remember { mutableIntStateOf(R.color.white) }
@@ -290,7 +294,9 @@ fun PrevMain(){
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Популярное", fontSize = 16.sp, fontWeight = FontWeight(500))
+                    Text(text = "Популярное", fontSize = 16.sp,
+                        fontWeight = FontWeight(500),
+                        color = Color.Black)
                     Text(text = "Все", color = colorResource(R.color.button),
                         fontSize = 12.sp,
                         fontWeight = FontWeight(500),
@@ -299,13 +305,23 @@ fun PrevMain(){
                     )
                 }
 
-                Row(
+                LazyRow(
                     modifier = Modifier.padding(top = 30.dp).fillMaxWidth()
-                        .padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
-                    ProductCard(navController)
-                    ProductCard(navController)
+                    item{
+                        ProductCard(navController)
+                    }
+                    item{
+                        ProductCard(navController)
+                    }
+                    item{
+                        ProductCard(navController)
+                    }
+                    item{
+                        ProductCard(navController)
+                    }
                 }
 
                 Row(
@@ -318,7 +334,8 @@ fun PrevMain(){
                         text = "Акции",
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600),
-                        fontFamily = font
+                        fontFamily = font,
+                        color = Color.Black
                     )
                     Text(text = "Все",
                         color = colorResource(R.color.button),

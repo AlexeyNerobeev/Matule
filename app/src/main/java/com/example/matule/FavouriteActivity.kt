@@ -77,7 +77,9 @@ fun PrevFavourite(){
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Image(
                             painter = painterResource(R.drawable.back_icon),
                             contentDescription = null
@@ -87,7 +89,8 @@ fun PrevFavourite(){
                         text = "Избранное",
                         fontFamily = font,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight(600)
+                        fontWeight = FontWeight(600),
+                        color = Color.Black
                     )
                     IconButton(onClick = {}) {
                         Image(

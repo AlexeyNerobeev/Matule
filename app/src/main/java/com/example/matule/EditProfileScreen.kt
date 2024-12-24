@@ -82,7 +82,9 @@ fun EditProfileScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
                     Image(
                         painter = painterResource(R.drawable.back_icon),
                         contentDescription = null
@@ -93,7 +95,8 @@ fun EditProfileScreen(navController: NavController) {
                     fontFamily = font,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
-                    modifier = Modifier.padding(start = 90.dp)
+                    modifier = Modifier.padding(start = 90.dp),
+                    color = Color.Black
                 )
             }
             Box(modifier = Modifier.padding(top = 40.dp)
@@ -130,7 +133,9 @@ fun EditProfileScreen(navController: NavController) {
                         focusedBorderColor = colorResource(R.color.TextFieldBackground),
                         unfocusedBorderColor = colorResource(R.color.TextFieldBackground),
                         focusedContainerColor = colorResource(R.color.TextFieldBackground),
-                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground)
+                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground),
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     shape = RoundedCornerShape(14.dp),
                     placeholder = {Text(text = "Имя",
@@ -159,7 +164,9 @@ fun EditProfileScreen(navController: NavController) {
                         focusedBorderColor = colorResource(R.color.TextFieldBackground),
                         unfocusedBorderColor = colorResource(R.color.TextFieldBackground),
                         focusedContainerColor = colorResource(R.color.TextFieldBackground),
-                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground)
+                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground),
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     shape = RoundedCornerShape(14.dp),
                     placeholder = {Text(text = "Email",
@@ -188,7 +195,9 @@ fun EditProfileScreen(navController: NavController) {
                         focusedBorderColor = colorResource(R.color.TextFieldBackground),
                         unfocusedBorderColor = colorResource(R.color.TextFieldBackground),
                         focusedContainerColor = colorResource(R.color.TextFieldBackground),
-                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground)
+                        unfocusedContainerColor = colorResource(R.color.TextFieldBackground),
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     visualTransformation = PasswordVisualTransformation(),
                     shape = RoundedCornerShape(14.dp),

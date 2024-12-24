@@ -106,7 +106,9 @@ fun PrevDetails(){
                 Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically){
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Image(painter = painterResource(R.drawable.back_icon),
                             contentDescription = null)
                     }

@@ -169,7 +169,12 @@ fun SideMenuScreen(navController: NavController) {
                                 contentDescription = null,
                                 modifier = Modifier.padding(top = 38.dp))
                             Row(verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(top = 30.dp)) {
+                                modifier = Modifier.padding(top = 30.dp)
+                                    .clickable {
+                                        navController.navigate(NavRoutes.SignIn.route){
+                                            popUpTo(NavRoutes.SignIn.route)
+                                        }
+                                    }) {
                                 Icon(
                                     painter = painterResource(R.drawable.left_icon),
                                     contentDescription = null,

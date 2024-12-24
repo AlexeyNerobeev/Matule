@@ -20,35 +20,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.matule.ui.theme.MatuleTheme
 import kotlinx.coroutines.delay
 
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreen : ComponentActivity(){
+class SplashScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
+        setContent {
             MatuleTheme {
                 splashScreen()
             }
         }
     }
 
-
 @Composable
 fun splashScreen() {
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         delay(2000)
-        val navigate = Intent(this@SplashScreen, SignInActivity::class.java)
-        startActivity(navigate)
+        val intent = Intent(this@SplashScreen, SignInActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // добавляем флаги
+        startActivity(intent)
     }
-    val gradientColorList = listOf(colorResource(R.color.GradientStart),
-        colorResource(R.color.GradientEnd))
-Box(modifier = Modifier.fillMaxSize()
-    .background(brush = GradientBrush(true, colors = gradientColorList)),
-    contentAlignment = Alignment.Center){
-    Image(painter = painterResource(R.drawable.splash_logo), contentDescription = "logo")
-}
+    val gradientColorList = listOf(
+        colorResource(R.color.GradientStart),
+        colorResource(R.color.GradientEnd)
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = GradientBrush(
+                    true,
+                    colors = gradientColorList)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(R.drawable.splash_logo),
+            contentDescription = "logo"
+        )
+    }
 }
 }

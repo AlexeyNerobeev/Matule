@@ -111,7 +111,9 @@ fun PrevCart(){
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Image(
                             painter = painterResource(R.drawable.back_icon),
                             contentDescription = null
@@ -122,13 +124,15 @@ fun PrevCart(){
                         fontFamily = font,
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600),
-                        modifier = Modifier.padding(start = 100.dp)
+                        modifier = Modifier.padding(start = 100.dp),
+                        color = Color.Black
                     )
                 }
                 Text(text = "${itemsCount.value} товар(а/ов)",
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500),
-                    modifier = Modifier.padding(top = 16.dp)
+                    modifier = Modifier.padding(top = 16.dp),
+                    color = Color.Black
                 )
                 LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
                     if (itemsCount.value > 0) {
@@ -231,13 +235,15 @@ fun PrevCart(){
                                                     text = name.value,
                                                     fontSize = 16.sp,
                                                     fontFamily = font,
-                                                    fontWeight = FontWeight(500)
+                                                    fontWeight = FontWeight(500),
+                                                    color = Color.Black
                                                 )
                                                 Text(
                                                     text = price.value.toString(),
                                                     modifier = Modifier.padding(top = 6.dp),
                                                     fontSize = 14.sp,
-                                                    fontWeight = FontWeight(500)
+                                                    fontWeight = FontWeight(500),
+                                                    color = Color.Black
                                                 )
                                             }
                                         }
@@ -297,7 +303,8 @@ fun PrevCart(){
                                 sum.value = price.value * itemsCount.value
                                 Text(text = "₽${sum.value}",
                                     fontSize = 16.sp,
-                                    fontWeight = FontWeight(500)
+                                    fontWeight = FontWeight(500),
+                                    color = Color.Black
                                 )
                             }
                             Row(modifier = Modifier.fillMaxWidth()
@@ -310,7 +317,8 @@ fun PrevCart(){
                                     color = colorResource(R.color.sub_text_dark))
                                 Text(text = "₽${orderSum.value}",
                                     fontSize = 16.sp,
-                                    fontWeight = FontWeight(500)
+                                    fontWeight = FontWeight(500),
+                                    color = Color.Black
                                 )
                             }
                             Canvas(Modifier.padding(top = 16.dp).fillMaxWidth().background(Color.White)) {
@@ -329,7 +337,8 @@ fun PrevCart(){
                                 Text(text = "Итого",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500),
-                                    fontFamily = font
+                                    fontFamily = font,
+                                    color = Color.Black
                                 )
                                 Text(text = "₽${sum.value + orderSum.value}",
                                     color = colorResource(R.color.button),

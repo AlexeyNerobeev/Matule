@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -153,7 +155,9 @@ private fun Prev() {
                         focusedBorderColor = tfColor,
                         unfocusedBorderColor = tfColor,
                         focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor
+                        unfocusedContainerColor = tfColor,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     shape = RoundedCornerShape(14.dp),
                     placeholder = {Text(text = "xyz@gmail.com",
@@ -173,6 +177,7 @@ private fun Prev() {
                     fontWeight = FontWeight(500),
                     color = Color.Black)
                 val passwordText = rememberSaveable() { mutableStateOf("") }
+                val isPasswordVisible = remember { mutableStateOf(false) }
                 OutlinedTextField(onValueChange = {newPassword ->
                     passwordText.value = newPassword
                 },
@@ -183,14 +188,16 @@ private fun Prev() {
                         .fillMaxWidth(),
                     trailingIcon = { Icon(painter = painterResource(R.drawable.eye), contentDescription = null,
                         modifier = Modifier.clickable {
-
+                            isPasswordVisible.value = !isPasswordVisible.value
                         })},
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = tfColor,
                         unfocusedBorderColor = tfColor,
                         focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor
+                        unfocusedContainerColor = tfColor,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     shape = RoundedCornerShape(14.dp),
                     placeholder = {Text(text = "********",

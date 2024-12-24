@@ -71,13 +71,13 @@ fun NotificationScreen(navController: NavController) {
             )
         )
         LazyColumn(modifier = Modifier.fillMaxSize().padding(innerPadding)
-            .padding(horizontal = 20.dp)
             .background(Color.White)) {
             if(heading.value.isNotEmpty()) {
                 items(15) {
                     Box(
                         modifier = Modifier
                             .padding(top = 12.dp)
+                            .padding(horizontal = 20.dp)
                             .fillMaxWidth()
                             .background(
                                 colorResource(R.color.MainBackground),

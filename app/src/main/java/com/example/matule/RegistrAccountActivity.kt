@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -144,7 +146,9 @@ fun RegistrationScreen(navController: NavController){
                     focusedBorderColor = tfColor,
                     unfocusedBorderColor = tfColor,
                     focusedContainerColor = tfColor,
-                    unfocusedContainerColor = tfColor
+                    unfocusedContainerColor = tfColor,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 ),
                 shape = RoundedCornerShape(14.dp),
                 placeholder = {Text(text = "xxxxxxxx",
@@ -171,7 +175,9 @@ fun RegistrationScreen(navController: NavController){
                     focusedBorderColor = tfColor,
                     unfocusedBorderColor = tfColor,
                     focusedContainerColor = tfColor,
-                    unfocusedContainerColor = tfColor
+                    unfocusedContainerColor = tfColor,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 ),
                 shape = RoundedCornerShape(14.dp),
                 placeholder = {Text(text = "xyz@gmail.com",
@@ -187,6 +193,7 @@ fun RegistrationScreen(navController: NavController){
                 fontSize = 16.sp,
                 fontFamily = font
             )
+            val isPasswordVisible = remember { mutableStateOf(false) }
             OutlinedTextField(onValueChange = {newPassword ->
                 textPassword.value = newPassword
             },
@@ -197,15 +204,17 @@ fun RegistrationScreen(navController: NavController){
                     .fillMaxWidth(),
                 trailingIcon = { Icon(painter = painterResource(R.drawable.eye), contentDescription = null,
                     modifier = Modifier.clickable {
-
+                        isPasswordVisible.value = !isPasswordVisible.value
                     })
                 },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = tfColor,
                     unfocusedBorderColor = tfColor,
                     focusedContainerColor = tfColor,
-                    unfocusedContainerColor = tfColor
+                    unfocusedContainerColor = tfColor,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 ),
                 shape = RoundedCornerShape(14.dp),
                 placeholder = {Text(text = "********",
