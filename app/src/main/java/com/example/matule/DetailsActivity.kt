@@ -115,9 +115,12 @@ fun PrevDetails(){
                     Text(text = "Sneaker Shop",
                         fontFamily = font,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight(600)
+                        fontWeight = FontWeight(600),
+                        color = Color.Black
                     )
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigate(NavRoutes.Cart.route)
+                    }) {
                         Image(
                             painter = painterResource(R.drawable.cart_topbar),
                             contentDescription = null,
@@ -130,7 +133,8 @@ fun PrevDetails(){
                     Text(text = name.value,
                         fontSize = 26.sp,
                         fontFamily = font,
-                        fontWeight = FontWeight(700))
+                        fontWeight = FontWeight(700),
+                        color = Color.Black)
                     Text(text = gender.value,
                         fontSize = 16.sp,
                         fontWeight = FontWeight(500),
@@ -140,7 +144,8 @@ fun PrevDetails(){
                     Text(text = price.value.toString(),
                         modifier = Modifier.padding(top = 8.dp),
                         fontSize = 24.sp,
-                        fontWeight = FontWeight(600)
+                        fontWeight = FontWeight(600),
+                        color = Color.Black
                     )
                 }
 

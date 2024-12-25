@@ -22,6 +22,8 @@ fun Navigation(){
         composable(NavRoutes.Notification.route) { NotificationScreen(navController)}
         composable(NavRoutes.SideMenu.route) { SideMenuScreen(navController)}
         composable(NavRoutes.EditProfile.route) { EditProfileScreen(navController)}
+        composable(NavRoutes.ForgotPassword.route) { ForgotPasswordScreen(navController)}
+        composable(NavRoutes.Verification.route) { VerificationScreen(navController)}
     }
 }
 
@@ -39,4 +41,6 @@ sealed class NavRoutes(val route: String){
     object Notification: NavRoutes("Notification")
     object SideMenu: NavRoutes("SideMenu")
     object EditProfile: NavRoutes("EditProfile")
+    object ForgotPassword: NavRoutes("ForgotPassword")
+    object Verification: NavRoutes("Verification")
 }

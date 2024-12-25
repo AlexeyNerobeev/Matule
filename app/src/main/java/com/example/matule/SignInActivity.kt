@@ -212,7 +212,7 @@ private fun Prev() {
                         .align(Alignment.End)
                         .padding(12.dp)
                         .clickable {
-
+                            navController.navigate(NavRoutes.ForgotPassword.route)
                         },
                     fontWeight = FontWeight(400),
                     fontSize = 12.sp,
