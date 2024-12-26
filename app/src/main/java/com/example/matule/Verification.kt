@@ -1,5 +1,6 @@
 package com.example.matule
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,10 +43,12 @@ fun PrevVerification() {
 
 @Composable
 fun VerificationScreen(navController: NavController) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize()
+        .background(Color.White)) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp)
                 .padding(top = 16.dp),
@@ -101,21 +104,25 @@ fun VerificationScreen(navController: NavController) {
                 val text5 = rememberSaveable() { mutableStateOf("") }
                 val text6 = rememberSaveable() { mutableStateOf("") }
                 val tfColor = colorResource(R.color.TextFieldBackground)
-                Box(
-
+                OutlinedTextField(
+                    onValueChange = { newText ->
+                        text1.value = newText
+                    },
+                    maxLines = 1,
+                    value = text1.value,
                     modifier = Modifier
                         .padding(top = 12.dp)
                         .size(46.dp, 99.dp),
-                    contentAlignment = Alignment.Center
-                ){
-                    BasicTextField(
-                        onValueChange = {
-                            text1.value = it
-                        },
-                        maxLines = 1,
-                        value = text1.value,
-                    )
-                }
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = tfColor,
+                        unfocusedBorderColor = tfColor,
+                        focusedContainerColor = tfColor,
+                        unfocusedContainerColor = tfColor,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    ),
+                    shape = RoundedCornerShape(14.dp)
+                )
                 OutlinedTextField(
                     onValueChange = { newText ->
                         text2.value = newText

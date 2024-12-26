@@ -39,11 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.matule.Connect.supabase
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.builtin.OTP
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -54,13 +49,16 @@ fun PrevForgotPassword(){
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize()
+        .background(Color.White)) { innerPadding ->
         val font = FontFamily(
             Font(
                 resId = R.font.raleway_bold
             )
         )
-        Column(modifier = Modifier.fillMaxSize().padding(innerPadding)
+        Column(modifier = Modifier.fillMaxSize()
+            .background(Color.White)
+            .padding(innerPadding)
             .padding(horizontal = 20.dp)
             .padding(top = 23.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -132,6 +130,7 @@ fun ForgotPasswordScreen(navController: NavController) {
             }
             if (openDialog.value) {
                 AlertDialog(
+                    containerColor = Color.White,
                     onDismissRequest = { openDialog.value = false
                                        navController.navigate(NavRoutes.Verification.route)},
                     icon = {Box(modifier = Modifier
