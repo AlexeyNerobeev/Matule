@@ -1,17 +1,16 @@
 package com.example.matule
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,20 +18,29 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
 
 @Preview
 @Composable
@@ -97,128 +105,58 @@ fun VerificationScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val text1 = rememberSaveable() { mutableStateOf("") }
-                val text2 = rememberSaveable() { mutableStateOf("") }
-                val text3 = rememberSaveable() { mutableStateOf("") }
-                val text4 = rememberSaveable() { mutableStateOf("") }
-                val text5 = rememberSaveable() { mutableStateOf("") }
-                val text6 = rememberSaveable() { mutableStateOf("") }
+                val textFields = List(6) { rememberSaveable { mutableStateOf("") } }
                 val tfColor = colorResource(R.color.TextFieldBackground)
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text1.value = newText
-                    },
-                    maxLines = 1,
-                    value = text1.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text2.value = newText
-                    },
-                    maxLines = 1,
-                    value = text2.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text3.value = newText
-                    },
-                    maxLines = 1,
-                    value = text3.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text4.value = newText
-                    },
-                    maxLines = 1,
-                    value = text4.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text5.value = newText
-                    },
-                    maxLines = 1,
-                    value = text5.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
-                OutlinedTextField(
-                    onValueChange = { newText ->
-                        text6.value = newText
-                    },
-                    maxLines = 1,
-                    value = text6.value,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .size(46.dp, 99.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = tfColor,
-                        unfocusedBorderColor = tfColor,
-                        focusedContainerColor = tfColor,
-                        unfocusedContainerColor = tfColor,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                )
+
+                val focusRequesters = List(6) { FocusRequester() }
+
+                for (i in textFields.indices) {
+                    OutlinedTextField(
+                        onValueChange = { newText ->
+                            if (newText.length <= 1) {
+                                textFields[i].value = newText
+                                if (newText.length == 1 && i < textFields.lastIndex) {
+                                    focusRequesters[i + 1].requestFocus()
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        value = textFields[i].value,
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .size(46.dp, 99.dp)
+                            .focusRequester(focusRequesters[i]),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = tfColor,
+                            unfocusedBorderColor = tfColor,
+                            focusedContainerColor = tfColor,
+                            unfocusedContainerColor = tfColor,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
+                        ),
+                        shape = RoundedCornerShape(14.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        textStyle = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = Color.Black
+                        )
+                    )
+                }
             }
+            var timeLeft by remember { mutableStateOf(30) }
+            var isTimerRunning by remember { mutableStateOf(false) }
+            val textColor = if (timeLeft <= 0) Color.Blue else colorResource(R.color.sub_text_dark)
+
+            LaunchedEffect(isTimerRunning) {
+                if (isTimerRunning) {
+                    while (timeLeft > 0) {
+                        delay(1000)
+                        timeLeft -= 1
+                    }
+                    isTimerRunning = false
+                }
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -227,18 +165,28 @@ fun VerificationScreen(navController: NavController) {
             ) {
                 Text(
                     text = "Отправить заново",
-                    color = colorResource(R.color.sub_text_dark),
+                    color = textColor,
                     fontSize = 12.sp,
                     fontWeight = FontWeight(400),
-                    fontFamily = font
+                    fontFamily = font,
+                    modifier = Modifier.clickable {
+                        if(timeLeft == 0){
+                            timeLeft = 30
+                            isTimerRunning = true
+                        }
+                    }
                 )
                 Text(
-                    text = "00:30",
+                    text = String.format("%02d:%02d", timeLeft / 60, timeLeft % 60),
                     color = colorResource(R.color.sub_text_dark),
                     fontSize = 12.sp,
                     fontWeight = FontWeight(400),
                     fontFamily = font
                 )
+            }
+
+            if (!isTimerRunning) {
+                isTimerRunning = true
             }
         }
     }
