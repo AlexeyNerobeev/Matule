@@ -11,5 +11,6 @@ data class Sneakers(
     val description: String,
     val info: String,
     val card_photo: String,
-    val detail_photo: String
+    val detail_photo: String,
+    val category: String
 )

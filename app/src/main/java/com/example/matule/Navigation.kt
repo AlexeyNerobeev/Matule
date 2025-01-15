@@ -24,6 +24,7 @@ fun Navigation(){
         composable(NavRoutes.EditProfile.route) { EditProfileScreen(navController)}
         composable(NavRoutes.ForgotPassword.route) { ForgotPasswordScreen(navController)}
         composable(NavRoutes.Verification.route) { VerificationScreen(navController)}
+        composable(NavRoutes.Categories.route) { CategoriesScreen(navController) }
     }
 }
 
@@ -43,4 +44,5 @@ sealed class NavRoutes(val route: String){
     object EditProfile: NavRoutes("EditProfile")
     object ForgotPassword: NavRoutes("ForgotPassword")
     object Verification: NavRoutes("Verification")
+    object Categories: NavRoutes("Categories")
 }

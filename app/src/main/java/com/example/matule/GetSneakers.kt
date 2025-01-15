@@ -6,7 +6,7 @@ import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-var sneakers: Sneakers = Sneakers(0, "", "", 0f, "", "", "", "")
+var sneakers: Sneakers = Sneakers(0, "", "", 0f, "", "", "", "", "")
 
 suspend fun GetSneakers(){
     withContext(Dispatchers.IO) {
@@ -20,7 +20,8 @@ suspend fun GetSneakers(){
                     "description",
                     "info",
                     "card_photo",
-                    "detail_photo"
+                    "detail_photo",
+                    "category"
                 )
             ).decodeSingle<Sneakers>()
             sneakers = response
