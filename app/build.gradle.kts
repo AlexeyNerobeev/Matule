@@ -42,6 +42,8 @@ android {
 
 dependencies {
 
+    implementation ("com.google.maps.android:maps-compose:4.4.1")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
     implementation("io.coil-kt:coil-compose:1.3.1")

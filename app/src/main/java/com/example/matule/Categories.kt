@@ -2,13 +2,17 @@ package com.example.matule
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -93,6 +97,8 @@ fun CategoriesScreen(navController: NavController) {
                 val textButtonColor2 = remember { mutableIntStateOf(R.color.black) }
                 val buttonColor3 = remember { mutableIntStateOf(R.color.white) }
                 val textButtonColor3 = remember { mutableIntStateOf(R.color.black) }
+                val buttonColor4 = remember { mutableIntStateOf(R.color.white) }
+                val textButtonColor4 = remember { mutableIntStateOf(R.color.black) }
                 if(categoryName.value == "Все"){
                     buttonColor.value = R.color.button
                     textButtonColor.value = R.color.white
@@ -105,6 +111,10 @@ fun CategoriesScreen(navController: NavController) {
                     buttonColor3.value = R.color.button
                     textButtonColor3.value = R.color.white
                 }
+                if(categoryName.value == "Running"){
+                    buttonColor4.value = R.color.button
+                    textButtonColor4.value = R.color.white
+                }
                 LazyRow(modifier = Modifier.padding(top = 16.dp).fillMaxWidth()) {
                     item {
                         Button(
@@ -116,6 +126,8 @@ fun CategoriesScreen(navController: NavController) {
                                     textButtonColor2.value = R.color.black
                                     buttonColor3.value = R.color.white
                                     textButtonColor3.value = R.color.black
+                                    buttonColor4.value = R.color.white
+                                    textButtonColor4.value = R.color.black
                                     category = "Все"
                                     categoryName.value = category
                                 }
@@ -145,6 +157,8 @@ fun CategoriesScreen(navController: NavController) {
                                     textButtonColor.value = R.color.black
                                     buttonColor3.value = R.color.white
                                     textButtonColor3.value = R.color.black
+                                    buttonColor4.value = R.color.white
+                                    textButtonColor4.value = R.color.black
                                     category = "Outdoor"
                                     categoryName.value = category
                                 }
@@ -174,6 +188,8 @@ fun CategoriesScreen(navController: NavController) {
                                     textButtonColor.value = R.color.black
                                     buttonColor2.value = R.color.white
                                     textButtonColor2.value = R.color.black
+                                    buttonColor4.value = R.color.white
+                                    textButtonColor4.value = R.color.black
                                     category = "Tennis"
                                     categoryName.value = category
                                 }
@@ -191,6 +207,54 @@ fun CategoriesScreen(navController: NavController) {
                                 fontWeight = FontWeight(400),
                                 fontFamily = font
                             )
+                        }
+                    }
+                    item {
+                        Button(
+                            onClick = {
+                                if (category != "Running"){
+                                    buttonColor4.value = R.color.button
+                                    textButtonColor4.value = R.color.white
+                                    buttonColor.value = R.color.white
+                                    textButtonColor.value = R.color.black
+                                    buttonColor2.value = R.color.white
+                                    textButtonColor2.value = R.color.black
+                                    buttonColor3.value = R.color.white
+                                    textButtonColor3.value = R.color.black
+                                    category = "Running"
+                                    categoryName.value = category
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = colorResource(textButtonColor4.value),
+                                containerColor = colorResource(buttonColor4.value)
+                            ),
+                            modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = "Running",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight(400),
+                                fontFamily = font
+                            )
+                        }
+                    }
+                }
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 25.dp),
+                    horizontalArrangement = Arrangement.spacedBy(13.dp),
+                    verticalItemSpacing = 13.dp) {
+                    if(sneakers.category == categoryName.value){
+                        items(20){
+                            ProductCard(navController)
+                        }
+                    } else if(categoryName.value == "Все"){
+                        items(20){
+                            ProductCard(navController)
                         }
                     }
                 }

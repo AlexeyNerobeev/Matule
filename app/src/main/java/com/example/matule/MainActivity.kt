@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
@@ -73,8 +74,6 @@ var category : String = ""
     @Composable
     fun MainScreen(navController: NavController){
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-
             val font = FontFamily(
                 Font(
                     resId = R.font.raleway_bold
@@ -134,6 +133,7 @@ var category : String = ""
                             searchField.value = newSearch
                         }, value = searchField.value,
                         shape = RoundedCornerShape(14.dp),
+                        maxLines = 1,
                         placeholder = {
                             Text(
                                 text = "Поиск",
@@ -185,30 +185,12 @@ var category : String = ""
                     )
                     val buttonColor = remember { mutableIntStateOf(R.color.white) }
                     val textButtonColor = remember { mutableIntStateOf(R.color.black) }
-                    val buttonColor2 = remember { mutableIntStateOf(R.color.white) }
-                    val textButtonColor2 = remember { mutableIntStateOf(R.color.black) }
-                    val buttonColor3 = remember { mutableIntStateOf(R.color.white) }
-                    val textButtonColor3 = remember { mutableIntStateOf(R.color.black) }
-                    val onClick1 = remember { mutableStateOf(false) }
-                    val onClick2 = remember { mutableStateOf(false) }
-                    val onClick3 = remember { mutableStateOf(false) }
                     LazyRow(modifier = Modifier.padding(top = 16.dp).fillMaxWidth()) {
                             item {
                                 Button(
                                     onClick = {
-                                        if (onClick1.value != true){
-                                            buttonColor.value = R.color.button
-                                            textButtonColor.value = R.color.white
-                                            onClick1.value = true
-                                            onClick2.value = false
-                                            buttonColor2.value = R.color.white
-                                            textButtonColor2.value = R.color.black
-                                            onClick3.value = false
-                                            buttonColor3.value = R.color.white
-                                            textButtonColor3.value = R.color.black
-                                            category = "Все"
-                                            navController.navigate(NavRoutes.Categories.route)
-                                        }
+                                        category = "Все"
+                                        navController.navigate(NavRoutes.Categories.route)
                                     },
                                     colors = ButtonDefaults.buttonColors(
                                         contentColor = colorResource(textButtonColor.value),
@@ -228,23 +210,12 @@ var category : String = ""
                         item {
                             Button(
                                 onClick = {
-                                    if (onClick2.value != true){
-                                        buttonColor2.value = R.color.button
-                                        textButtonColor2.value = R.color.white
-                                        onClick2.value = true
-                                        onClick1.value = false
-                                        buttonColor.value = R.color.white
-                                        textButtonColor.value = R.color.black
-                                        onClick3.value = false
-                                        buttonColor3.value = R.color.white
-                                        textButtonColor3.value = R.color.black
-                                        category = "Outdoor"
-                                        navController.navigate(NavRoutes.Categories.route)
-                                    }
+                                    category = "Outdoor"
+                                    navController.navigate(NavRoutes.Categories.route)
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    contentColor = colorResource(textButtonColor2.value),
-                                    containerColor = colorResource(buttonColor2.value)
+                                    contentColor = colorResource(textButtonColor.value),
+                                    containerColor = colorResource(buttonColor.value)
                                 ),
                                 modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
                                 shape = RoundedCornerShape(8.dp)
@@ -260,29 +231,39 @@ var category : String = ""
                         item {
                             Button(
                                 onClick = {
-                                    if (onClick3.value != true){
-                                        buttonColor3.value = R.color.button
-                                        textButtonColor3.value = R.color.white
-                                        onClick3.value = true
-                                        onClick1.value = false
-                                        buttonColor.value = R.color.white
-                                        textButtonColor.value = R.color.black
-                                        onClick2.value = false
-                                        buttonColor2.value = R.color.white
-                                        textButtonColor2.value = R.color.black
-                                        category = "Tennis"
-                                        navController.navigate(NavRoutes.Categories.route)
-                                    }
+                                    category = "Tennis"
+                                    navController.navigate(NavRoutes.Categories.route)
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    contentColor = colorResource(textButtonColor3.value),
-                                    containerColor = colorResource(buttonColor3.value)
+                                    contentColor = colorResource(textButtonColor.value),
+                                    containerColor = colorResource(buttonColor.value)
                                 ),
                                 modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 Text(
                                     text = "Tennis",
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight(400),
+                                    fontFamily = font
+                                )
+                            }
+                        }
+                        item {
+                            Button(
+                                onClick = {
+                                    category = "Running"
+                                    navController.navigate(NavRoutes.Categories.route)
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    contentColor = colorResource(textButtonColor.value),
+                                    containerColor = colorResource(buttonColor.value)
+                                ),
+                                modifier = Modifier.size(120.dp, 40.dp).padding(end = 16.dp),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text(
+                                    text = "Running",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight(400),
                                     fontFamily = font
