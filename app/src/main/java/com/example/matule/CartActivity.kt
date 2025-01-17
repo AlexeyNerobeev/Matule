@@ -81,6 +81,9 @@ fun PrevCart(){
     cartScreen(n)
 }
 
+var Sum: Float = 0f
+var Order_sum: Float = 0f
+
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun cartScreen(navController: NavController){
@@ -89,13 +92,13 @@ fun PrevCart(){
         val itemsCount = remember { mutableIntStateOf(0) }
         val name = remember { mutableStateOf("") }
         val price = remember{ mutableFloatStateOf(0f) }
-        val sum = remember { mutableFloatStateOf(0f) }
-        val orderSum = remember { mutableFloatStateOf(60.20f) }
         if(user.id == cart.user_id){
             itemsCount.value = cart.count
             name.value = sneakers.name
             price.value = sneakers.price
         }
+        val sum = remember { mutableFloatStateOf(price.value * itemsCount.value) }
+        val orderSum = remember { mutableFloatStateOf(itemsCount.value * 60.20f) }
 
         val font = FontFamily(
             Font(
@@ -166,6 +169,8 @@ fun PrevCart(){
                                                     onClick = {
                                                         if(itemsCount.value > 0)
                                                         itemsCount.value++
+                                                        sum.value = price.value * itemsCount.value
+                                                        orderSum.value = itemsCount.value * 60.20f
                                                     },
                                                     colors = IconButtonDefaults.iconButtonColors(
                                                         contentColor = Color.White
@@ -188,6 +193,8 @@ fun PrevCart(){
                                                     onClick = {
                                                         if (itemsCount.value > 1){
                                                             itemsCount.value--
+                                                            sum.value = price.value * itemsCount.value
+                                                            orderSum.value = itemsCount.value * 60.20f
                                                         }
                                                     },
                                                     colors = IconButtonDefaults.iconButtonColors(
@@ -300,7 +307,7 @@ fun PrevCart(){
                                     fontWeight = FontWeight(500),
                                     fontSize = 16.sp,
                                     color = colorResource(R.color.sub_text_dark))
-                                sum.value = price.value * itemsCount.value
+                                Sum = sum.value
                                 Text(text = "₽${sum.value}",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500),
@@ -315,6 +322,7 @@ fun PrevCart(){
                                     fontWeight = FontWeight(500),
                                     fontSize = 16.sp,
                                     color = colorResource(R.color.sub_text_dark))
+                                Order_sum = orderSum.value
                                 Text(text = "₽${orderSum.value}",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(500),
@@ -347,7 +355,9 @@ fun PrevCart(){
                                 )
                             }
                             Button(onClick = {
-
+                                if(itemsCount.value != 0){
+                                    navController.navigate(NavRoutes.Checkout.route)
+                                }
                             },
                                 modifier = Modifier.padding(top = 30.dp)
                                     .fillMaxWidth(),
