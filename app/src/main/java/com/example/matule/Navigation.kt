@@ -12,7 +12,7 @@ fun Navigation(){
         composable(NavRoutes.Main.route) { MainScreen(navController) }
         composable(NavRoutes.SignIn.route){ signInScreen(navController) }
         composable(NavRoutes.Registration.route){ RegistrationScreen(navController)}
-        composable(NavRoutes.onBoard1.route) { onBoard1_Screen(navController)}
+        composable(NavRoutes.onBoard1.route) { onBoard1_Screen(navController) }
         composable(NavRoutes.onBoard2.route) { onBoardScreen2(navController)}
         composable(NavRoutes.onBoard3.route) { onBoard3Screen(navController)}
         composable(NavRoutes.Favourite.route) { favouriteScreen(navController)}

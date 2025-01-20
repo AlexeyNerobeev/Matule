@@ -1,13 +1,10 @@
 package com.example.matule
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -20,16 +17,14 @@ class QueueTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun Test(){
+    fun test(){
         composeTestRule.setContent {
-            var isOnB2IsVisible by remember{ mutableStateOf(false)}
-            if(isOnB2IsVisible){
-                OnBoard2()
-            } else{
-                OnBoard1_Screen()
-            }
+            val navController = rememberNavController()
+            onBoard1_Screen(navController)
         }
-        composeTestRule.onNodeWithText("ДОБРО").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Начать").assertIsDisplayed()
         composeTestRule.onNodeWithText("Начать").performClick()
+        composeTestRule.onNodeWithText("Далее").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Далее").performClick()
     }
 }

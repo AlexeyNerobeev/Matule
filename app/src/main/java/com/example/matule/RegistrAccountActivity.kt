@@ -1,6 +1,7 @@
 package com.example.matule
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -66,6 +69,10 @@ val font = FontFamily(
         resId = R.font.raleway_bold
     )
 )
+
+fun isEmailValid(email: String): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
 
 @Preview
 @Composable
@@ -241,14 +248,25 @@ fun RegistrationScreen(navController: NavController){
         }
 
         val coroutine = rememberCoroutineScope()
+        val snackbarHostState = remember { SnackbarHostState() }
+        SnackbarHost(hostState = snackbarHostState)
         Button(modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(top = 24.dp)
             .fillMaxWidth(),
             onClick = {
-                coroutine.launch(Dispatchers.IO) {
-                    registration(textEmail.value, textPassword.value, navController,
-                        textName.value)
+                if(isEmailValid(textEmail.value)){
+                    coroutine.launch(Dispatchers.IO) {
+                        registration(textEmail.value, textPassword.value, navController,
+                            textName.value)
+                    }
+                } else{
+                    coroutine.launch {
+                        snackbarHostState.showSnackbar(
+                            "Некорректная почта",
+                            withDismissAction = true
+                        )
+                    }
                 }
             },
             colors = ButtonDefaults.buttonColors(

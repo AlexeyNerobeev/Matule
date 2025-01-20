@@ -69,11 +69,16 @@ fun PrevFavourite(){
             )
         )
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding).fillMaxSize().background(
-                colorResource(R.color.MainBackground)
-            )) {
+            Column(modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .background(
+                    colorResource(R.color.MainBackground)
+                )) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -92,17 +97,17 @@ fun PrevFavourite(){
                         fontWeight = FontWeight(600),
                         color = Color.Black
                     )
-                    IconButton(onClick = {}) {
-                        Image(
-                            painter = painterResource(R.drawable.heart_icon),
-                            contentDescription = null,
-                            modifier = Modifier.padding(end = 5.dp)
-                        )
-                    }
+                    Image(
+                        painter = painterResource(R.drawable.heart_icon),
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 5.dp)
+                    )
                 }
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize().padding(top = 32.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 32.dp)
                         .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
                     verticalItemSpacing = 15.dp
@@ -117,12 +122,16 @@ fun PrevFavourite(){
         }
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val const = createRef()
-            Box(modifier = Modifier.fillMaxWidth().height(106.dp).constrainAs(const){
-                bottom.linkTo(parent.bottom)
-            }){
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(106.dp)
+                .constrainAs(const) {
+                    bottom.linkTo(parent.bottom)
+                }){
                 Image(painter = painterResource(R.drawable.bottombar_shape),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .align(Alignment.BottomCenter),
                     contentScale = ContentScale.Crop)
                 IconButton(onClick = {
@@ -132,15 +141,21 @@ fun PrevFavourite(){
                         containerColor = colorResource(R.color.button),
                         contentColor = Color.White
                     ),
-                    modifier = Modifier.size(56.dp, 56.dp).align(Alignment.TopCenter)
+                    modifier = Modifier
+                        .size(56.dp, 56.dp)
+                        .align(Alignment.TopCenter)
                 ) {
                     Image(painter = painterResource(R.drawable.cart_flact_button),
                         contentDescription = null)
                 }
-                Row(modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 31.dp),
+                Row(modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
+                    .padding(horizontal = 31.dp),
                     horizontalArrangement = Arrangement.SpaceBetween) {
                     Row(horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth(0.5f)
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
                             .padding(end = 50.dp)){
                         IconButton(onClick = {
                             navController.navigate(NavRoutes.Main.route)
@@ -157,7 +172,8 @@ fun PrevFavourite(){
                         }
                     }
                     Row(horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth(1f)
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
                             .padding(start = 50.dp)){
                         IconButton(onClick = {
                             navController.navigate(NavRoutes.Notification.route)
