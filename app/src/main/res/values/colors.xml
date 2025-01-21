@@ -16,4 +16,5 @@
     <color name="button">#48B2E7</color>
     <color name="MainBackground">#F7F7F9</color>
     <color name="LightBlue">#DFEFFF</color>
+    <color name="darkBlue">#0D6EFD</color>
 </resources>
