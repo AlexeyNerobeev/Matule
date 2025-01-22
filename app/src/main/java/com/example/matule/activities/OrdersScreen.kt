@@ -2,6 +2,7 @@ package com.example.matule.activities
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
+import com.example.matule.navigation.NavRoutes
 
 @Preview
 @Composable
@@ -79,7 +81,10 @@ fun OrdersScreen(navController: NavController) {
                         color = colorResource(R.color.black))
                     Row(modifier = Modifier.padding(top = 16.dp)
                         .background(Color.White, RoundedCornerShape(8.dp))
-                        .fillMaxWidth()){
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(NavRoutes.DetailOrder.route)
+                        }){
                         Box(modifier = Modifier
                             .padding(vertical = 10.dp)
                             .padding(start = 10.dp)
@@ -137,7 +142,10 @@ fun OrdersScreen(navController: NavController) {
                     }
                     Row(modifier = Modifier.padding(top = 12.dp)
                         .background(Color.White, RoundedCornerShape(8.dp))
-                        .fillMaxWidth()){
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(NavRoutes.DetailOrder.route)
+                        }){
                         Box(modifier = Modifier
                             .padding(vertical = 10.dp)
                             .padding(start = 10.dp)
@@ -204,7 +212,10 @@ fun OrdersScreen(navController: NavController) {
                             .padding(top = 24.dp))
                     Row(modifier = Modifier.padding(top = 28.dp)
                         .background(Color.White, RoundedCornerShape(8.dp))
-                        .fillMaxWidth()){
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(NavRoutes.DetailOrder.route)
+                        }){
                         Box(modifier = Modifier
                             .padding(vertical = 10.dp)
                             .padding(start = 10.dp)
@@ -262,7 +273,10 @@ fun OrdersScreen(navController: NavController) {
                     }
                     Row(modifier = Modifier.padding(top = 12.dp)
                         .background(Color.White, RoundedCornerShape(8.dp))
-                        .fillMaxWidth()){
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(NavRoutes.DetailOrder.route)
+                        }){
                         Box(modifier = Modifier
                             .padding(vertical = 10.dp)
                             .padding(start = 10.dp)

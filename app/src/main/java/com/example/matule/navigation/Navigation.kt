@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.activities.CategoriesScreen
 import com.example.matule.activities.CheckoutScreen
+import com.example.matule.activities.DetailOrder
 import com.example.matule.activities.EditProfileScreen
 import com.example.matule.activities.ForgotPasswordScreen
 import com.example.matule.activities.MainScreen
@@ -45,6 +46,7 @@ fun Navigation(){
         composable(NavRoutes.Categories.route) { CategoriesScreen(navController) }
         composable(NavRoutes.Checkout.route){ CheckoutScreen(navController) }
         composable(NavRoutes.Orders.route){ OrdersScreen(navController)}
+        composable(NavRoutes.DetailOrder.route){ DetailOrder(navController)}
     }
 }
 
@@ -67,4 +69,5 @@ sealed class NavRoutes(val route: String){
     object Categories: NavRoutes("Categories")
     object Checkout: NavRoutes("Checkout")
     object Orders: NavRoutes("Orders")
+    object DetailOrder: NavRoutes("DetailOrder")
 }

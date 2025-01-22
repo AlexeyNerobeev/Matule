@@ -30,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -120,10 +122,29 @@ fun ProfileScreen(navController: NavController) {
                 fontSize = 12.sp,
                 fontFamily = font
             )
-            Image(painter = painterResource(R.drawable.qr_profile),
-                contentDescription = null,
-                modifier = Modifier.padding(top = 11.dp)
-                    .size(335.dp, 66.dp))
+
+            Box(modifier = Modifier
+                .padding(top = 11.dp)
+                .background(colorResource(R.color.MainBackground),
+                    RoundedCornerShape(16.dp))
+                .fillMaxWidth()){
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .background(Color.White,
+                        RoundedCornerShape(16.dp))) {
+                    Text(text = "Открыть",
+                        color = Color.Black,
+                        fontWeight = FontWeight(600),
+                        fontSize = 12.sp,
+                        fontFamily = font,
+                        modifier = Modifier
+                            .rotate(-90f)
+                            .align(Alignment.CenterVertically)
+                    )
+                    BarcodeScreen()
+                }
+            }
 
             LazyColumn(modifier = Modifier.padding(top = 20.dp)) {
                 item {

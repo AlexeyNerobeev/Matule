@@ -42,6 +42,9 @@ android {
 
 dependencies {
 
+    implementation ("com.google.zxing:core:3.4.1")
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
     implementation ("com.google.maps.android:maps-compose:4.4.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")

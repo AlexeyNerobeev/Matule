@@ -46,7 +46,7 @@ import com.example.matule.navigation.NavRoutes
 
 @Preview
 @Composable
-private fun Prev(){
+private fun PrevCheckout(){
     val n = rememberNavController()
     CheckoutScreen(n)
 }
@@ -91,7 +91,9 @@ fun CheckoutScreen(navController: NavController){
                         fontSize = 14.sp,
                         fontFamily = font,
                         fontWeight = FontWeight(500),
-                        color = Color.Black
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(top = 16.dp)
                    )
                     Row(modifier = Modifier.padding(top = 16.dp)
                         .fillMaxWidth()){
