@@ -67,7 +67,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                 navController.popBackStack()
             },
                 modifier = Modifier.align(Alignment.Start)) {
-                Icon(painter = painterResource(R.drawable.back_icon),
+                Icon(painter = painterResource(R.drawable.back_icon_grey),
                     contentDescription = null,
                     tint = Color.Unspecified)
             }

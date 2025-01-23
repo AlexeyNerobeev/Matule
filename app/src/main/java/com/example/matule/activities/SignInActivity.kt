@@ -9,15 +9,20 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -31,7 +36,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -55,6 +62,7 @@ import com.example.matule.getData.GetSneakers
 import com.example.matule.getData.GetUser
 import com.example.matule.navigation.NavRoutes
 import com.example.matule.navigation.Navigation
+import com.example.matule.supabase.isOnline
 import com.example.matule.ui.theme.MatuleTheme
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +130,7 @@ private fun PrevSignIn() {
     
     @Composable
     fun signInScreen(navController: NavController){
+        val openDialog = remember{ mutableStateOf(false)}
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
@@ -206,7 +215,8 @@ private fun PrevSignIn() {
                     trailingIcon = { Icon(painter = painterResource(R.drawable.eye), contentDescription = null,
                         modifier = Modifier.clickable {
                             isPasswordVisible.value = !isPasswordVisible.value
-                        })},
+                        },
+                        tint = colorResource(R.color.hint))},
                     visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = tfColor,
@@ -236,9 +246,19 @@ private fun PrevSignIn() {
                     fontFamily = font,
                     color = colorResource(R.color.sub_text_dark))
                     val coroutine = rememberCoroutineScope()
+                val isOnline = remember { mutableStateOf(true) }
+                if (isOnline(LocalContext.current)){
+                    isOnline.value = true
+                } else{
+                    isOnline.value = false
+                }
                 Button(onClick = {
-                    coroutine.launch(Dispatchers.IO) {
-                        authorization(textLogin.value, passwordText.value, navController)
+                    if (isOnline.value){
+                        coroutine.launch(Dispatchers.IO) {
+                            authorization(textLogin.value, passwordText.value, navController)
+                        }
+                    } else{
+                        openDialog.value = true
                     }
                 },
                     modifier = Modifier
@@ -256,6 +276,43 @@ private fun PrevSignIn() {
                         fontWeight = FontWeight(600)
                     )
                 }
+            }
+            if (openDialog.value){
+                AlertDialog(
+                    containerColor = Color.White,
+                    onDismissRequest = { openDialog.value = false},
+                    title = { Text(text = "Ошибка!",
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        fontFamily = com.example.matule.activities.font,
+                        fontWeight = FontWeight(700),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                    ) },
+                    text = {
+                        Text(text = "Отсутствует подключение к интернету")
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            openDialog.value = false
+                        },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(51.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.button),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(16.dp)) {
+                            Text(text = "Ок",
+                                fontFamily = com.example.matule.activities.font,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight(500)
+                            )
+                        }
+                    }
+                )
             }
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val const1 = createRef()

@@ -74,7 +74,30 @@ fun NotificationScreen(navController: NavController) {
                 resId = R.font.raleway_bold
             )
         )
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(innerPadding)
+        Column(modifier = Modifier
+            .padding(innerPadding)
+            .padding(horizontal = 20.dp)) {
+        Box(modifier = Modifier
+            .fillMaxWidth()) {
+            IconButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Icon(painter = painterResource(R.drawable.back_icon_grey),
+                    contentDescription = null,
+                    tint = Color.Unspecified)
+            }
+            Text(text = "Уведомления",
+                color = Color.Black,
+                fontSize = 16.sp,
+                fontWeight = FontWeight(600),
+                fontFamily = font,
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 28.dp)
             .background(Color.White)) {
             if(heading.value.isNotEmpty()) {
                 items(15) {
@@ -123,6 +146,7 @@ fun NotificationScreen(navController: NavController) {
             }
         }
     }
+        }
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val const = createRef()
         Box(modifier = Modifier

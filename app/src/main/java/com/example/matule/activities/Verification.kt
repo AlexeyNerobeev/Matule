@@ -70,7 +70,7 @@ fun VerificationScreen(navController: NavController) {
                 modifier = Modifier.align(Alignment.Start)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.back_icon),
+                    painter = painterResource(R.drawable.back_icon_grey),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )

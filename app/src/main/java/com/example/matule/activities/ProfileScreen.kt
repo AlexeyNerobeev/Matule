@@ -85,13 +85,14 @@ fun ProfileScreen(navController: NavController) {
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(onClick = {
                     navController.popBackStack()
                 }) {
                     Image(
-                        painter = painterResource(R.drawable.back_icon),
+                        painter = painterResource(R.drawable.back_icon_grey),
                         contentDescription = null
                     )
                 }
@@ -100,8 +101,20 @@ fun ProfileScreen(navController: NavController) {
                     fontFamily = font,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
-                    modifier = Modifier.padding(start = 100.dp),
                     color = Color.Black
+                )
+                Text(text = "Готово",
+                    color = colorResource(R.color.button),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight(700),
+                    fontFamily = font,
+                    modifier = Modifier
+                        .clickable {
+                            coroutine.launch(Dispatchers.IO) {
+                                UpdateProfile(name.value, surname.value,
+                                    adress = adress.value, phone.value)
+                            }
+                        }
                 )
             }
             Image(painter = rememberImagePainter(photo.value),
@@ -305,25 +318,6 @@ fun ProfileScreen(navController: NavController) {
                                 fontWeight = FontWeight(500),
                                 modifier = Modifier.padding(start = 14.dp)
                             )})
-                        Button(onClick = {
-                            coroutine.launch(Dispatchers.IO) {
-                                UpdateProfile(name.value, surname.value,
-                                    adress = adress.value, phone.value)
-                            }
-                        },
-                            modifier = Modifier.padding(top = 16.dp)
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.button),
-                                contentColor = Color.White
-                            )) {
-                            Text(text = "Сохранить",
-                                fontSize = 14.sp,
-                                fontFamily = font,
-                                fontWeight = FontWeight(500)
-                            )
-                        }
                     }
                 }
                 item{

@@ -129,12 +129,16 @@ var category : String = ""
                 ) {
                     val searchField = rememberSaveable() { mutableStateOf("") }
                     OutlinedTextField(
-                        onValueChange = { newSearch ->
-                            searchField.value = newSearch
-                        }, value = searchField.value,
+                        onValueChange = {
+                            navController.navigate(NavRoutes.Search.route)
+                        },
+                        value = searchField.value,
                         shape = RoundedCornerShape(14.dp),
                         maxLines = 1,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f)
+                            .clickable {
+                                navController.navigate(NavRoutes.Search.route)
+                            },
                         placeholder = {
                             Text(
                                 text = "Поиск",

@@ -218,7 +218,8 @@ fun RegistrationScreen(navController: NavController){
                 trailingIcon = { Icon(painter = painterResource(R.drawable.eye), contentDescription = null,
                     modifier = Modifier.clickable {
                         isPasswordVisible.value = !isPasswordVisible.value
-                    })
+                    },
+                    tint = colorResource(R.color.hint))
                 },
                 visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(

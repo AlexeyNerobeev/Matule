@@ -14,6 +14,7 @@ import com.example.matule.activities.NotificationScreen
 import com.example.matule.activities.OrdersScreen
 import com.example.matule.activities.ProfileScreen
 import com.example.matule.activities.RegistrationScreen
+import com.example.matule.activities.SearchScreen
 import com.example.matule.activities.SideMenuScreen
 import com.example.matule.activities.VerificationScreen
 import com.example.matule.activities.cartScreen
@@ -47,6 +48,7 @@ fun Navigation(){
         composable(NavRoutes.Checkout.route){ CheckoutScreen(navController) }
         composable(NavRoutes.Orders.route){ OrdersScreen(navController)}
         composable(NavRoutes.DetailOrder.route){ DetailOrder(navController)}
+        composable(NavRoutes.Search.route){ SearchScreen(navController)}
     }
 }
 
@@ -70,4 +72,5 @@ sealed class NavRoutes(val route: String){
     object Checkout: NavRoutes("Checkout")
     object Orders: NavRoutes("Orders")
     object DetailOrder: NavRoutes("DetailOrder")
+    object Search: NavRoutes("Search")
 }
