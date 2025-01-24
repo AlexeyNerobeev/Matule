@@ -1,5 +1,7 @@
 package com.example.matule.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -13,8 +15,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -31,6 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -43,6 +48,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
@@ -52,11 +58,13 @@ import com.example.matule.dataOperations.AddProfile
 import com.example.matule.getData.GetSneakers
 import com.example.matule.getData.GetUser
 import com.example.matule.navigation.NavRoutes
+import com.example.matule.supabase.isOnline
 import com.example.matule.ui.theme.MatuleTheme
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.w3c.dom.Document
 
 class RegistrAccountActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +116,7 @@ suspend fun registration(login: String, password: String, navController: NavCont
 
 @Composable
 fun RegistrationScreen(navController: NavController){
+    val openDialog = remember{ mutableStateOf(false)}
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White),
@@ -245,7 +254,15 @@ fun RegistrationScreen(navController: NavController){
                 Image(painter = painterResource(R.drawable.pers_data_icon),
                     contentDescription = null)
                 Text(text = "Даю согласие на обработку\nперсональных данных",
-                    modifier = Modifier.padding(start = 12.dp),
+                    modifier = Modifier.padding(start = 12.dp)
+                        .clickable {
+//                            val pdfUri: Uri = Uri.parse("file:///android_asset/Конкурсное-задание.pdf")
+//                            val intent = Intent(Intent.ACTION_VIEW)
+//                            intent.setDataAndType(pdfUri, "application/pdf")
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+//
+//                            startActivity(intent)
+                        },
                     fontSize = 16.sp,
                     fontFamily = font,
                     fontWeight = FontWeight(500),
@@ -257,23 +274,33 @@ fun RegistrationScreen(navController: NavController){
         val coroutine = rememberCoroutineScope()
         val snackbarHostState = remember { SnackbarHostState() }
         SnackbarHost(hostState = snackbarHostState)
+        val isOnline = remember{ mutableStateOf(true)}
+        if(isOnline(LocalContext.current)){
+            isOnline.value = true
+        } else{
+            isOnline.value = false
+        }
         Button(modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(top = 24.dp)
             .fillMaxWidth(),
             onClick = {
-                if(isEmailValid(textEmail.value)){
-                    coroutine.launch(Dispatchers.IO) {
-                        registration(textEmail.value, textPassword.value, navController,
-                            textName.value)
+                if(isOnline.value){
+                    if(isEmailValid(textEmail.value)){
+                        coroutine.launch(Dispatchers.IO) {
+                            registration(textEmail.value, textPassword.value, navController,
+                                textName.value)
+                        }
+                    } else{
+                        coroutine.launch {
+                            snackbarHostState.showSnackbar(
+                                "Некорректная почта",
+                                withDismissAction = true
+                            )
+                        }
                     }
                 } else{
-                    coroutine.launch {
-                        snackbarHostState.showSnackbar(
-                            "Некорректная почта",
-                            withDismissAction = true
-                        )
-                    }
+                    openDialog.value = true
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -285,6 +312,43 @@ fun RegistrationScreen(navController: NavController){
                 fontSize = 14.sp,
                 fontWeight = FontWeight(600),
                 fontFamily = font
+            )
+        }
+        if (openDialog.value){
+            AlertDialog(
+                containerColor = Color.White,
+                onDismissRequest = { openDialog.value = false},
+                title = { Text(text = "Ошибка!",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontFamily = com.example.matule.activities.font,
+                    fontWeight = FontWeight(700),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                ) },
+                text = {
+                    Text(text = "Отсутствует подключение к интернету")
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        openDialog.value = false
+                    },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(51.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.button),
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(16.dp)) {
+                        Text(text = "Ок",
+                            fontFamily = com.example.matule.activities.font,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(500)
+                        )
+                    }
+                }
             )
         }
     }

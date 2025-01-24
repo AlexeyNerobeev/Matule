@@ -114,7 +114,9 @@ fun ForgotPasswordScreen(navController: NavController) {
                 )})
             val openDialog = remember { mutableStateOf(false) }
             Button(onClick = {
-                openDialog.value = true
+                if(isEmailValid(textLogin.value)){
+                    openDialog.value = true
+                }
             },
                 modifier = Modifier.padding(top = 40.dp)
                     .fillMaxWidth()

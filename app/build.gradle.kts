@@ -42,6 +42,9 @@ android {
 
 dependencies {
 
+    implementation ("androidx.activity:activity-compose:1.3.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
     implementation ("com.google.zxing:core:3.4.1")
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 

@@ -279,6 +279,7 @@ var Order_sum: Float = 0f
                                                         DelCart()
                                                         GetCart()
                                                     }
+                                                    itemsCount.value = 0
                                                 },
                                                 colors = IconButtonDefaults.iconButtonColors(
                                                     contentColor = Color.White

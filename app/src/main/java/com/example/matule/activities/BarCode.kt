@@ -21,7 +21,7 @@ fun generateBarcode(text: String): Bitmap? {
             text,
             BarcodeFormat.CODE_128,
             264,
-            53
+            100
         )
         val width = bitMatrix.width
         val height = bitMatrix.height
@@ -48,7 +48,7 @@ fun BarcodeScreen() {
             Image(
                 bitmap = it.asImageBitmap(),
                 contentDescription = "Barcode",
-                modifier = Modifier.size(264.dp, 53.dp)
+                modifier = Modifier.size(264.dp, 100.dp)
                     .clip(RoundedCornerShape(16.dp))
             )
         }

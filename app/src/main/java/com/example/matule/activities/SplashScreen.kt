@@ -36,7 +36,7 @@ fun splashScreen() {
     LaunchedEffect(key1 = true) {
         delay(2000)
         val intent = Intent(this@SplashScreen, SignInActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // добавляем флаги
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
     val gradientColorList = listOf(

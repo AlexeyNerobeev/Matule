@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
 
     <application
         android:allowBackup="true"
@@ -48,11 +51,6 @@
             android:name=".activities.OnBoard2"
             android:exported="false"
             android:label="@string/title_activity_on_board2"
-            android:theme="@style/Theme.Matule" />
-        <activity
-            android:name=".OnBoard1Activity"
-            android:exported="false"
-            android:label="@string/title_activity_on_board1"
             android:theme="@style/Theme.Matule" />
         <activity
             android:name=".activities.SplashScreen"

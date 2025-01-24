@@ -1,6 +1,15 @@
 package com.example.matule.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import android.provider.Settings
+import android.view.WindowManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -31,9 +38,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +59,31 @@ import com.example.matule.navigation.NavRoutes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+fun requestWriteSettingsPermission(context: Context) {
+    if (!Settings.System.canWrite(context)) {
+        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+        intent.data = Uri.parse("package:${context.packageName}")
+        context.startActivity(intent)
+    }
+}
+
+fun setScreenBrightness(context: Context, brightness: Int) {
+    if (Settings.System.canWrite(context)) {
+        Settings.System.putInt(
+            context.contentResolver,
+            Settings.System.SCREEN_BRIGHTNESS,
+            brightness
+        )
+    }
+}
+
+fun getCurrentBrightness(context: Context): Int {
+    return Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS, 255)
+}
+
+var brightness = 0
+
+
 @Preview
 @Composable
 fun PrevProfile(){
@@ -68,6 +100,7 @@ fun ProfileScreen(navController: NavController) {
     val adress = remember { mutableStateOf("") }
     val phone = remember{ mutableStateOf("")}
     val coroutine = rememberCoroutineScope()
+    val context = LocalContext.current
     coroutine.launch(Dispatchers.IO) {
         GetProfile()
         photo.value = profile.photo
@@ -79,7 +112,10 @@ fun ProfileScreen(navController: NavController) {
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding).fillMaxSize().background(Color.White)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .background(Color.White)
                 .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -119,7 +155,8 @@ fun ProfileScreen(navController: NavController) {
             }
             Image(painter = rememberImagePainter(photo.value),
                 contentDescription = null,
-                modifier = Modifier.padding(top = 48.dp)
+                modifier = Modifier
+                    .padding(top = 48.dp)
                     .size(96.dp, 96.dp))
             Text(text = "${name.value} ${surname.value}",
                 modifier = Modifier.padding(top = 8.dp),
@@ -129,7 +166,10 @@ fun ProfileScreen(navController: NavController) {
                 fontFamily = font
             )
             Text(text = "Изменить фото профиля",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(8.dp)
+                    .clickable {
+
+                    },
                 color = colorResource(R.color.button),
                 fontWeight = FontWeight(600),
                 fontSize = 12.sp,
@@ -138,14 +178,26 @@ fun ProfileScreen(navController: NavController) {
 
             Box(modifier = Modifier
                 .padding(top = 11.dp)
-                .background(colorResource(R.color.MainBackground),
-                    RoundedCornerShape(16.dp))
-                .fillMaxWidth()){
+                .background(
+                    colorResource(R.color.MainBackground),
+                    RoundedCornerShape(16.dp)
+                )
+                .fillMaxWidth()
+                .clickable {
+                    brightness = getCurrentBrightness(context)
+                    navController.navigate(NavRoutes.LoyaltyCard.route)
+                    //Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS, 80);
+                    requestWriteSettingsPermission(context)
+                    setScreenBrightness(context, 80)
+                }){
                 Row(modifier = Modifier
                     .fillMaxWidth()
+                    .height(70.dp)
                     .padding(8.dp)
-                    .background(Color.White,
-                        RoundedCornerShape(16.dp))) {
+                    .background(
+                        Color.White,
+                        RoundedCornerShape(16.dp)
+                    )) {
                     Text(text = "Открыть",
                         color = Color.Black,
                         fontWeight = FontWeight(600),
@@ -321,7 +373,8 @@ fun ProfileScreen(navController: NavController) {
                     }
                 }
                 item{
-                    Box(modifier = Modifier.padding(top = 16.dp)
+                    Box(modifier = Modifier
+                        .padding(top = 16.dp)
                         .fillMaxWidth()
                         .height(100.dp)
                         .background(Color.White))
@@ -334,12 +387,13 @@ fun ProfileScreen(navController: NavController) {
         Box(modifier = Modifier
             .fillMaxWidth()
             .height(106.dp)
-            .constrainAs(const){
+            .constrainAs(const) {
                 bottom.linkTo(parent.bottom)
             }){
             Image(painter = painterResource(R.drawable.bottombar_shape),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .align(Alignment.BottomCenter),
                 contentScale = ContentScale.Crop)
             IconButton(onClick = {
@@ -349,15 +403,21 @@ fun ProfileScreen(navController: NavController) {
                     containerColor = colorResource(R.color.button),
                     contentColor = Color.White
                 ),
-                modifier = Modifier.size(56.dp, 56.dp).align(Alignment.TopCenter)
+                modifier = Modifier
+                    .size(56.dp, 56.dp)
+                    .align(Alignment.TopCenter)
             ) {
                 Image(painter = painterResource(R.drawable.cart_flact_button),
                     contentDescription = null)
             }
-            Row(modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 31.dp),
+            Row(modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth()
+                .padding(horizontal = 31.dp),
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(0.5f)
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
                         .padding(end = 50.dp)){
                     IconButton(onClick = {
                         navController.navigate(NavRoutes.Main.route)
@@ -373,7 +433,8 @@ fun ProfileScreen(navController: NavController) {
                     }
                 }
                 Row(horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(1f)
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
                         .padding(start = 50.dp)){
                     IconButton(onClick = {
                         navController.navigate(NavRoutes.Notification.route)
