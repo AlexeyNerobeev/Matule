@@ -1,9 +1,12 @@
 package com.example.matule.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.matule.CheckoutVM
+import com.example.matule.OrdersVM
 import com.example.matule.activities.CategoriesScreen
 import com.example.matule.activities.CheckoutScreen
 import com.example.matule.activities.DetailOrder
@@ -29,6 +32,8 @@ import com.example.matule.activities.signInScreen
 @Composable
 fun Navigation(){
     val navController = rememberNavController()
+    val orderVM = OrdersVM()
+    val checkoutVM = CheckoutVM()
     NavHost(navController = navController, startDestination = NavRoutes.SignIn.route){
         composable(NavRoutes.Main.route) { MainScreen(navController) }
         composable(NavRoutes.SignIn.route){ signInScreen(navController) }
@@ -46,9 +51,9 @@ fun Navigation(){
         composable(NavRoutes.ForgotPassword.route) { ForgotPasswordScreen(navController) }
         composable(NavRoutes.Verification.route) { VerificationScreen(navController) }
         composable(NavRoutes.Categories.route) { CategoriesScreen(navController) }
-        composable(NavRoutes.Checkout.route){ CheckoutScreen(navController) }
+        composable(NavRoutes.Checkout.route){ CheckoutScreen(navController, checkoutVM) }
         composable(NavRoutes.Orders.route){ OrdersScreen(navController)}
-        composable(NavRoutes.DetailOrder.route){ DetailOrder(navController)}
+        composable(NavRoutes.DetailOrder.route){ DetailOrder(navController, orderVM)}
         composable(NavRoutes.Search.route){ SearchScreen(navController)}
         composable(NavRoutes.LoyaltyCard.route){ LoyaltyCard(navController)}
     }

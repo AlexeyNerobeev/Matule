@@ -10,12 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,19 +32,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.matule.OrdersVM
 import com.example.matule.R
+import com.example.matule.getData.sneakers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 fun PrevDetailOrder(){
     val n = rememberNavController()
-    DetailOrder(n)
+    val vm = OrdersVM()
+    DetailOrder(n, vm)
 }
 
 @Composable
-fun DetailOrder(navController: NavController) {
+fun DetailOrder(navController: NavController, vm: OrdersVM) {
+    val coroutine = rememberCoroutineScope()
+    val sneakerName = remember { mutableStateOf("") }
+    LaunchedEffect(Dispatchers.IO) {
+        coroutine.launch() {
+            vm.GetOrders()
+        }
+    }
+    if(vm.sneakerId == sneakers.id){
+        sneakerName.value = sneakers.name
+    }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -93,19 +115,19 @@ fun DetailOrder(navController: NavController) {
                     .padding(start = 12.dp)
                     .padding(top = 12.dp)
                     .padding(end = 7.dp)) {
-                    Text(text = "Nike Air Max 270\nEssential",
+                    Text(text = "${sneakerName.value}",
                         color = Color.Black,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(500),
                         fontFamily = font)
                     Row(modifier = Modifier
                         .padding(top = 30.dp)){
-                        Text(text = "₽814.15",
+                        Text(text = "₽${vm.sum}",
                             color = Color.Black,
                             fontWeight = FontWeight(500),
                             fontSize = 16.sp
                         )
-                        Text(text = "₽60.20",
+                        Text(text = "₽${vm.orderSum}",
                             color = colorResource(R.color.hint),
                             fontSize = 16.sp,
                             fontWeight = FontWeight(500),
@@ -139,7 +161,7 @@ fun DetailOrder(navController: NavController) {
                             .padding(start = 12.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             Column {
-                                Text(text = "emmanueloyiboke@gmail.com",
+                                Text(text = "${vm.email}",
                                     color = Color.Black,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500)
@@ -164,7 +186,7 @@ fun DetailOrder(navController: NavController) {
                             .fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             Column{
-                                Text(text = "+234-811-732-5298",
+                                Text(text = "${vm.phone}",
                                     color = Color.Black,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500)
@@ -192,7 +214,7 @@ fun DetailOrder(navController: NavController) {
                         .fillMaxWidth()
                         .padding(top = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(text = "1082 Аэропорт, Нигерии",
+                        Text(text = "${vm.adress}",
                             color = colorResource(R.color.hint),
                             fontWeight = FontWeight(500),
                             fontSize = 12.sp
@@ -200,12 +222,42 @@ fun DetailOrder(navController: NavController) {
                         Icon(painter = painterResource(R.drawable.select_icon),
                             contentDescription = null)
                     }
-                    Image(painter = painterResource(R.drawable.map),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .fillMaxWidth(),
-                        contentScale = ContentScale.Crop)
+                    Box(modifier = Modifier
+                        .padding(top = 16.dp)){
+                        Image(painter = painterResource(R.drawable.map),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            contentScale = ContentScale.Crop)
+                        Image(painter = painterResource(R.drawable.blackout),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth(),
+                            contentScale = ContentScale.Crop)
+                        Column(modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(top = 19.dp)) {
+                            Text(text = "Посмотреть на карте",
+                                color = Color.White,
+                                fontFamily = font,
+                                fontWeight = FontWeight(700),
+                                fontSize = 20.sp
+                            )
+                            Box(modifier = Modifier
+                                .padding(top = 6.dp)
+                                .background(colorResource(R.color.darkBlue),
+                                    CircleShape
+                                )
+                                .size(36.dp)
+                                .align(Alignment.CenterHorizontally)){
+                                Icon(painter = painterResource(R.drawable.marker),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier
+                                        .align(Alignment.Center))
+
+                            }
+                        }
+                    }
                     Text(text = "Способ оплаты",
                         color = Color.Black,
                         fontSize = 14.sp,
@@ -226,12 +278,12 @@ fun DetailOrder(navController: NavController) {
                             .padding(start = 12.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             Column {
-                                Text(text = "DbL Card",
+                                Text(text = "${vm.cardName}",
                                     color = Color.Black,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500)
                                 )
-                                Text(text = "**** **** 0696 4629",
+                                Text(text = "**** **** ${vm.cardNumber}",
                                     color = colorResource(R.color.hint),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight(500),

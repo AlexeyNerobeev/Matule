@@ -22,9 +22,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,18 +43,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.matule.CheckoutVM
 import com.example.matule.R
 import com.example.matule.navigation.NavRoutes
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 private fun PrevCheckout(){
     val n = rememberNavController()
-    CheckoutScreen(n)
+    val vm = CheckoutVM()
+    CheckoutScreen(n, vm)
 }
 
 @Composable
-fun CheckoutScreen(navController: NavController){
+fun CheckoutScreen(navController: NavController, vm : CheckoutVM){
+    vm.ShowInfo()
+    val coroutine = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).fillMaxSize().background(
@@ -105,7 +112,7 @@ fun CheckoutScreen(navController: NavController){
                             horizontalArrangement = Arrangement.SpaceBetween){
                             Column(modifier = Modifier
                                 .padding(start = 12.dp)) {
-                                Text(text = "emmanueloyiboke@gmail.com",
+                                Text(text = "${vm.email}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500),
                                     color = Color.Black
@@ -136,7 +143,7 @@ fun CheckoutScreen(navController: NavController){
                                 .fillMaxWidth()) {
                             Column(modifier = Modifier
                                 .padding(start = 12.dp)) {
-                                Text(text = "+234-811-732-5298",
+                                Text(text = "${vm.phone}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500),
                                     color = Color.Black
@@ -166,7 +173,7 @@ fun CheckoutScreen(navController: NavController){
                         .padding(top = 12.dp)
                         .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(text = "1082 Аэропорт, Нигерии",
+                        Text(text = "${vm.adress}",
                             fontSize = 12.sp,
                             fontWeight = FontWeight(500),
                             color = colorResource(R.color.hint))
@@ -175,12 +182,41 @@ fun CheckoutScreen(navController: NavController){
                             modifier = Modifier
                                 .clickable {  })
                     }
-                    Image(painter = painterResource(R.drawable.map),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        contentScale = ContentScale.Crop)
+                    Box(modifier = Modifier
+                        .padding(top = 16.dp)){
+                        Image(painter = painterResource(R.drawable.map),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            contentScale = ContentScale.Crop)
+                        Image(painter = painterResource(R.drawable.blackout),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth(),
+                            contentScale = ContentScale.Crop)
+                        Column(modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(top = 19.dp)) {
+                            Text(text = "Посмотреть на карте",
+                                color = Color.White,
+                                fontFamily = font,
+                                fontWeight = FontWeight(700),
+                                fontSize = 20.sp
+                            )
+                            Box(modifier = Modifier
+                                .padding(top = 6.dp)
+                                .background(colorResource(R.color.darkBlue),
+                                    CircleShape)
+                                .size(36.dp)
+                                .align(Alignment.CenterHorizontally)){
+                                Icon(painter = painterResource(R.drawable.marker),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier
+                                        .align(Alignment.Center))
+
+                            }
+                        }
+                    }
                     Text(text = "Способ оплаты",
                         fontSize = 14.sp,
                         fontWeight = FontWeight(500),
@@ -201,12 +237,12 @@ fun CheckoutScreen(navController: NavController){
                                 .fillMaxWidth()){
                             Column(modifier = Modifier
                                 .padding(start = 12.dp)) {
-                                Text(text = "DbL Card",
+                                Text(text = "${vm.cardName}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500),
                                     color = Color.Black
                                 )
-                                Text(text = "**** **** 0696 4629",
+                                Text(text = "${vm.cardNumber}",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight(500),
                                     color = colorResource(R.color.hint))
@@ -239,7 +275,7 @@ fun CheckoutScreen(navController: NavController){
                             fontWeight = FontWeight(500),
                             fontSize = 16.sp,
                             color = colorResource(R.color.sub_text_dark))
-                        Text(text = "₽$Sum",
+                        Text(text = "₽${vm.sum}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight(500),
                             color = Color.Black
@@ -253,7 +289,7 @@ fun CheckoutScreen(navController: NavController){
                             fontWeight = FontWeight(500),
                             fontSize = 16.sp,
                             color = colorResource(R.color.sub_text_dark))
-                        Text(text = "₽$Order_sum",
+                        Text(text = "₽${vm.orderSum}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight(500),
                             color = Color.Black
@@ -278,7 +314,7 @@ fun CheckoutScreen(navController: NavController){
                             fontFamily = font,
                             color = Color.Black
                         )
-                        Text(text = "₽${Sum + Order_sum}",
+                        Text(text = "₽${vm.total}",
                             color = colorResource(R.color.button),
                             fontSize = 16.sp,
                             fontWeight = FontWeight(500)
@@ -286,6 +322,9 @@ fun CheckoutScreen(navController: NavController){
                     }
                     val openDialog = remember { mutableStateOf(false) }
                     Button(onClick = {
+                        coroutine.launch {
+                            vm.AddOrder()
+                        }
                         openDialog.value = true
                     },
                         modifier = Modifier.padding(top = 30.dp)

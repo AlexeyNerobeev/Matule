@@ -90,7 +90,7 @@ fun PrevCart(){
 var Sum: Float = 0f
 var Order_sum: Float = 0f
 
-    @SuppressLint("CoroutineCreationDuringComposition")
+    @SuppressLint("CoroutineCreationDuringComposition", "SuspiciousIndentation")
     @Composable
     fun cartScreen(navController: NavController){
 
