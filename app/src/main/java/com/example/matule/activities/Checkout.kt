@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -24,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.matule.CheckoutVM
 import com.example.matule.R
 import com.example.matule.navigation.NavRoutes
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Preview
@@ -88,6 +91,9 @@ fun CheckoutScreen(navController: NavController, vm : CheckoutVM){
                     color = Color.Black
                 )
             }
+            LazyColumn {
+                item {
+
             Column(modifier = Modifier
                 .padding(top = 46.dp)
                 .fillMaxWidth()
@@ -151,7 +157,9 @@ fun CheckoutScreen(navController: NavController, vm : CheckoutVM){
                                 Text(text = "Телефон",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight(500),
-                                    color = colorResource(R.color.hint)
+                                    color = colorResource(R.color.hint),
+                                    modifier = Modifier
+                                        .padding(top = 4.dp)
                                 )
                             }
                             Icon(painter = painterResource(R.drawable.pen),
@@ -179,6 +187,7 @@ fun CheckoutScreen(navController: NavController, vm : CheckoutVM){
                             color = colorResource(R.color.hint))
                         Icon(painter = painterResource(R.drawable.select_icon),
                             contentDescription = null,
+                            tint = Color.Unspecified,
                             modifier = Modifier
                                 .clickable {  })
                     }
@@ -257,6 +266,13 @@ fun CheckoutScreen(navController: NavController, vm : CheckoutVM){
                                     })
                         }
                     }
+                }
+            }
+                }
+                item {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp))
                 }
             }
         }

@@ -186,7 +186,6 @@ fun ProfileScreen(navController: NavController) {
                 .clickable {
                     brightness = getCurrentBrightness(context)
                     navController.navigate(NavRoutes.LoyaltyCard.route)
-                    //Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS, 80);
                     requestWriteSettingsPermission(context)
                     setScreenBrightness(context, 80)
                 }){

@@ -2,14 +2,17 @@ package com.example.matule.activities
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -24,8 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.matule.OrdersVM
 import com.example.matule.R
 import com.example.matule.getData.sneakers
+import com.example.matule.navigation.NavRoutes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -99,7 +105,10 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
             Row(modifier = Modifier
                 .padding(top = 17.dp)
                 .fillMaxWidth()
-                .background(Color.White)){
+                .background(Color.White)
+                .clickable {
+                    navController.navigate(NavRoutes.Details.route)
+                }){
                 Box(modifier = Modifier
                     .padding(start = 10.dp)
                     .padding(vertical = 10.dp)
@@ -137,13 +146,16 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                     }
                 }
             }
+            LazyColumn {
+                item{
+
             Box(modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
                 .background(Color.White,
                     RoundedCornerShape(16.dp))) {
                 Column(modifier = Modifier
-                    .padding(start = 20.dp)
+                    .padding(horizontal = 20.dp)
                     .padding(top = 16.dp)) {
                     Text(text = "Контактная информация",
                         color = Color.Black,
@@ -169,11 +181,16 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                                 Text(text = "Email",
                                     color = colorResource(R.color.hint),
                                     fontWeight = FontWeight(500),
-                                    fontSize = 12.sp
+                                    fontSize = 12.sp,
+                                    modifier = Modifier
+                                        .padding(top = 4.dp)
                                 )
                             }
                             Icon(painter = painterResource(R.drawable.pen),
-                                contentDescription = null)
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically))
                         }
                     }
                     Row(modifier = Modifier
@@ -200,7 +217,10 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                                 )
                             }
                             Icon(painter = painterResource(R.drawable.pen),
-                                contentDescription = null)
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically))
                         }
                     }
                     Text(text = "Адрес",
@@ -220,7 +240,8 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                             fontSize = 12.sp
                         )
                         Icon(painter = painterResource(R.drawable.select_icon),
-                            contentDescription = null)
+                            contentDescription = null,
+                            tint = Color.Unspecified)
                     }
                     Box(modifier = Modifier
                         .padding(top = 16.dp)){
@@ -283,7 +304,7 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight(500)
                                 )
-                                Text(text = "**** **** ${vm.cardNumber}",
+                                Text(text = "${vm.cardNumber}",
                                     color = colorResource(R.color.hint),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight(500),
@@ -293,18 +314,48 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
                             }
                             Icon(painter = painterResource(R.drawable.select_icon),
                                 contentDescription = null,
+                                tint = Color.Unspecified,
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically))
                         }
                     }
                 }
             }
-            Image(painter = painterResource(R.drawable.qr_profile),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                contentScale = ContentScale.Crop)
+                    val context = LocalContext.current
+                    Box(modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth()
+                        .background(Color.White,
+                            RoundedCornerShape(16.dp))
+                        .clickable {
+                            brightness = getCurrentBrightness(context)
+                            navController.navigate(NavRoutes.LoyaltyCard.route)
+                            requestWriteSettingsPermission(context)
+                            setScreenBrightness(context, 80)
+                        }){
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp)) {
+                            Text(text = "Открыть",
+                                color = Color.Black,
+                                fontWeight = FontWeight(600),
+                                fontSize = 12.sp,
+                                fontFamily = font,
+                                modifier = Modifier
+                                    .padding(start = 7.dp)
+                                    .align(Alignment.CenterVertically)
+                                    .rotate(-90f)
+                            )
+                            BarcodeScreen()
+                        }
+                    }
+                }
+                item {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp))
+                }
+            }
         }
     }
 }

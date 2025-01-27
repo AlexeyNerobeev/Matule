@@ -241,8 +241,7 @@ var Order_sum: Float = 0f
                                                 modifier = Modifier
                                                     .padding(start = 30.dp)
                                                     .padding(end = 13.dp)
-                                                    .padding(vertical = 29.dp),
-                                                verticalArrangement = Arrangement.Center
+                                                    .padding(vertical = 29.dp)
                                             ) {
                                                 Text(
                                                     text = name.value,

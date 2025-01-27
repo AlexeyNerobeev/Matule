@@ -45,7 +45,11 @@ fun SideMenuScreen(navController: NavController) {
             .fillMaxSize()){
             Image(painter = painterResource(R.drawable.home_screen),
                 contentDescription = null,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier
+                    .padding(top = 49.dp)
+                    .padding(start = 32.dp)
+                    .padding(bottom = 97.dp)
+                    .fillMaxHeight()
                     .align(Alignment.CenterEnd),
                 contentScale = ContentScale.Crop)
                     Column(
