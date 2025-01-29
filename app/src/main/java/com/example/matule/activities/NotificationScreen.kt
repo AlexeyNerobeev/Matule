@@ -75,6 +75,7 @@ fun NotificationScreen(navController: NavController) {
             )
         )
         Column(modifier = Modifier
+            .background(Color.White)
             .padding(innerPadding)
             .padding(horizontal = 20.dp)) {
         Box(modifier = Modifier

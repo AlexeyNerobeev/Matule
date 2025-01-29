@@ -1,4 +1,4 @@
-package com.example.matule
+package com.example.matule.data
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -7,14 +7,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.matule.data.Orders
-import com.example.matule.getData.sneakers
 import com.example.matule.getData.user
 import com.example.matule.supabase.Connect.supabase
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
-import io.github.jan.supabase.realtime.PostgresAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

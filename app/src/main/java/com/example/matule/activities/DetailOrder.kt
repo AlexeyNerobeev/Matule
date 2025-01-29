@@ -21,7 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,10 +36,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.matule.OrdersVM
+import com.example.matule.data.OrdersVM
 import com.example.matule.R
 import com.example.matule.getData.sneakers
 import com.example.matule.navigation.NavRoutes
@@ -64,8 +62,8 @@ fun DetailOrder(navController: NavController, vm: OrdersVM) {
             vm.GetOrders()
         }
     }
-    if(vm.sneakerId == sneakers.id){
-        sneakerName.value = sneakers.name
+    if(vm.sneakerId == sneakers[0].id){
+        sneakerName.value = sneakers[0].name
     }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier

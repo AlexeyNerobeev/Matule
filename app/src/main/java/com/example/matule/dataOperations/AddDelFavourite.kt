@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 suspend fun AddFavourite() {
     withContext(Dispatchers.IO){
         try {
-            val favourite = Favourite(sneaker_id = sneakers.id, user_id = user.id)
+            val favourite = Favourite(sneaker_id = sneakers[0].id, user_id = user.id)
             supabase.from("favourite").insert(favourite)
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())

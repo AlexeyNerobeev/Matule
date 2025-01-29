@@ -40,7 +40,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
+import com.example.matule.data.SneakersVM
 import com.example.matule.getData.favourite
+import com.example.matule.getData.sneakers
 import com.example.matule.getData.user
 import com.example.matule.navigation.NavRoutes
 import com.example.matule.ui.theme.MatuleTheme
@@ -61,12 +63,13 @@ class FavouriteActivity : ComponentActivity() {
 @Composable
 fun PrevFavourite(){
     val n = rememberNavController()
-    favouriteScreen(n)
+    val vm = SneakersVM()
+    favouriteScreen(n, vm)
 }
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
-    fun favouriteScreen(navController: NavController){
+    fun favouriteScreen(navController: NavController, vm: SneakersVM){
         val font = FontFamily(
             Font(
                 resId = R.font.raleway_bold
@@ -117,8 +120,9 @@ fun PrevFavourite(){
                     verticalItemSpacing = 15.dp
                 ) {
                     if(favourite.user_id == user.id){
-                        items(20){_ ->
-                            ProductCard(navController)
+                        items(vm.sneakersList.size){s ->
+                            vm.sneakerId = s
+                            ProductCard(navController, vm)
                         }
                     }
                 }

@@ -99,11 +99,11 @@ fun PrevDetails(){
             textCart.value = "В корзине"
         }
         coroutine.launch(Dispatchers.IO) {
-            detail_photo.value = sneakers.card_photo
-            name.value = sneakers.name
-            price.value = sneakers.price
-            gender.value = sneakers.gender
-            description.value = sneakers.description
+            detail_photo.value = sneakers[0].card_photo
+            name.value = sneakers[0].name
+            price.value = sneakers[0].price
+            gender.value = sneakers[0].gender
+            description.value = sneakers[0].description
         }
 
         val font = FontFamily(

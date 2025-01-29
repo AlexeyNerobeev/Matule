@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 suspend fun AddCart() {
     withContext(Dispatchers.IO){
         try {
-            val cart = Cart(user_id = user.id, sneaker_id = sneakers.id, count = 1)
+            val cart = Cart(user_id = user.id, sneaker_id = sneakers[0].id, count = 1)
             supabase.from("cart").insert(cart)
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())

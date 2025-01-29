@@ -1,12 +1,11 @@
 package com.example.matule.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.matule.CheckoutVM
-import com.example.matule.OrdersVM
+import com.example.matule.data.CheckoutVM
+import com.example.matule.data.OrdersVM
 import com.example.matule.activities.CategoriesScreen
 import com.example.matule.activities.CheckoutScreen
 import com.example.matule.activities.DetailOrder
@@ -28,20 +27,22 @@ import com.example.matule.activities.onBoard1_Screen
 import com.example.matule.activities.onBoard3Screen
 import com.example.matule.activities.onBoardScreen2
 import com.example.matule.activities.signInScreen
+import com.example.matule.data.SneakersVM
 
 @Composable
 fun Navigation(){
     val navController = rememberNavController()
     val orderVM = OrdersVM()
     val checkoutVM = CheckoutVM()
+    val sneakersVM = SneakersVM()
     NavHost(navController = navController, startDestination = NavRoutes.SignIn.route){
-        composable(NavRoutes.Main.route) { MainScreen(navController) }
+        composable(NavRoutes.Main.route) { MainScreen(navController, sneakersVM) }
         composable(NavRoutes.SignIn.route){ signInScreen(navController) }
         composable(NavRoutes.Registration.route){ RegistrationScreen(navController) }
         composable(NavRoutes.onBoard1.route) { onBoard1_Screen(navController) }
         composable(NavRoutes.onBoard2.route) { onBoardScreen2(navController) }
         composable(NavRoutes.onBoard3.route) { onBoard3Screen(navController) }
-        composable(NavRoutes.Favourite.route) { favouriteScreen(navController) }
+        composable(NavRoutes.Favourite.route) { favouriteScreen(navController, sneakersVM) }
         composable(NavRoutes.Details.route) { detailsScreen(navController) }
         composable(NavRoutes.Cart.route) { cartScreen(navController) }
         composable(NavRoutes.Profile.route) { ProfileScreen(navController) }
@@ -50,11 +51,11 @@ fun Navigation(){
         composable(NavRoutes.EditProfile.route) { EditProfileScreen(navController) }
         composable(NavRoutes.ForgotPassword.route) { ForgotPasswordScreen(navController) }
         composable(NavRoutes.Verification.route) { VerificationScreen(navController) }
-        composable(NavRoutes.Categories.route) { CategoriesScreen(navController) }
+        composable(NavRoutes.Categories.route) { CategoriesScreen(navController, sneakersVM) }
         composable(NavRoutes.Checkout.route){ CheckoutScreen(navController, checkoutVM) }
         composable(NavRoutes.Orders.route){ OrdersScreen(navController)}
         composable(NavRoutes.DetailOrder.route){ DetailOrder(navController, orderVM)}
-        composable(NavRoutes.Search.route){ SearchScreen(navController)}
+        composable(NavRoutes.Search.route){ SearchScreen(navController, sneakersVM)}
         composable(NavRoutes.LoyaltyCard.route){ LoyaltyCard(navController)}
     }
 }

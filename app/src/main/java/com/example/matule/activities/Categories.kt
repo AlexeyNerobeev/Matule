@@ -33,20 +33,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
+import com.example.matule.data.SneakersVM
 import com.example.matule.getData.sneakers
 
 @Preview
 @Composable
 fun PrevCategories(){
     val n = rememberNavController()
-    CategoriesScreen(n)
+    val vm = SneakersVM()
+    CategoriesScreen(n, vm)
 }
 
 @Composable
-fun CategoriesScreen(navController: NavController) {
+fun CategoriesScreen(navController: NavController, vm: SneakersVM) {
     val font = FontFamily(
         Font(
             resId = R.font.raleway_bold
@@ -249,13 +252,15 @@ fun CategoriesScreen(navController: NavController) {
                     .padding(top = 25.dp),
                     horizontalArrangement = Arrangement.spacedBy(13.dp),
                     verticalItemSpacing = 13.dp) {
-                    if(sneakers.category == categoryName.value){
-                        items(20){
-                            ProductCard(navController)
+                    if(vm.sneakersList[vm.sneakerId].category == categoryName.value){
+                        items(vm.sneakersList.size){s ->
+                            vm.sneakerId = s
+                            ProductCard(navController, vm)
                         }
                     } else if(categoryName.value == "Все"){
-                        items(20){
-                            ProductCard(navController)
+                        items(vm.sneakersList.size){s ->
+                            vm.sneakerId = s
+                            ProductCard(navController, vm)
                         }
                     }
                 }

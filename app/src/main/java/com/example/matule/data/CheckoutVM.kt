@@ -1,19 +1,16 @@
-package com.example.matule
+package com.example.matule.data
 
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.matule.activities.Order_sum
 import com.example.matule.activities.Sum
-import com.example.matule.data.Orders
-import com.example.matule.data.Profile
 import com.example.matule.getData.profile
 import com.example.matule.getData.sneakers
 import com.example.matule.getData.user
@@ -60,7 +57,7 @@ class CheckoutVM(): ViewModel() {
         withContext(Dispatchers.IO){
             try {
                 val order = Orders(email = email, phone = phone, adress = adress, card_name = cardName,
-                    card_number = cardNumber, sneaker_id = sneakers.id, user_id = user.id, sum = sum,
+                    card_number = cardNumber, sneaker_id = sneakers[0].id, user_id = user.id, sum = sum,
                     order_sum = orderSum, created_at = "")
                 supabase.from("orders").insert(order)
             } catch (er: Exception){

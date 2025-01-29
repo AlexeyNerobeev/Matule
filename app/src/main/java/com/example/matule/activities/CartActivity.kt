@@ -100,8 +100,8 @@ var Order_sum: Float = 0f
         val price = remember{ mutableFloatStateOf(0f) }
         if(user.id == cart.user_id){
             itemsCount.value = cart.count
-            name.value = sneakers.name
-            price.value = sneakers.price
+            name.value = sneakers[0].name
+            price.value = sneakers[0].price
         }
         val sum = remember { mutableFloatStateOf(price.value * itemsCount.value) }
         val orderSum = remember { mutableFloatStateOf(itemsCount.value * 60.20f) }

@@ -7,7 +7,8 @@ import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-var sneakers: Sneakers = Sneakers(0, "", "", 0f, "", "", "", "", "")
+var sneakers: List<Sneakers> = listOf(Sneakers(0, "", "", 0f,
+    "", "", "", "", ""))
 
 suspend fun GetSneakers(){
     withContext(Dispatchers.IO) {
@@ -24,7 +25,7 @@ suspend fun GetSneakers(){
                     "detail_photo",
                     "category"
                 )
-            ).decodeSingle<Sneakers>()
+            ).decodeList<Sneakers>()
             sneakers = response
         } catch (er: Exception) {
             Log.e("supa", er.message.toString())

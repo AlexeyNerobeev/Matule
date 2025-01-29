@@ -41,17 +41,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
+import com.example.matule.data.SneakersVM
 import com.example.matule.getData.sneakers
 
 @Preview
 @Composable
 fun PrevSearch(){
     val n = rememberNavController()
-    SearchScreen(n)
+    val vm = SneakersVM()
+    SearchScreen(n, vm)
 }
 
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(navController: NavController, vm: SneakersVM) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier
             .background(colorResource(R.color.MainBackground))
@@ -88,9 +90,9 @@ fun SearchScreen(navController: NavController) {
                     onDone = {
                         if(search.value.isNotEmpty()){
                             searchList.add(search.value)
-                            if(search.value == sneakers.name ||
-                                search.value == sneakers.gender ||
-                                search.value == sneakers.category){
+                            if(search.value == sneakers[0].name ||
+                                search.value == sneakers[0].gender ||
+                                search.value == sneakers[0].category){
                                 isSearchCorrect.value = true
                             } else{
                                 isSearchCorrect.value = false
@@ -105,9 +107,9 @@ fun SearchScreen(navController: NavController) {
                     .clickable {
                         if(search.value.isNotEmpty()){
                             searchList.add(search.value)
-                            if(search.value == sneakers.name ||
-                                search.value == sneakers.gender ||
-                                search.value == sneakers.category){
+                            if(search.value == sneakers[0].name ||
+                                search.value == sneakers[0].gender ||
+                                search.value == sneakers[0].category){
                                 isSearchCorrect.value = true
                             } else{
                                 isSearchCorrect.value = false
@@ -117,9 +119,9 @@ fun SearchScreen(navController: NavController) {
                 leadingIcon = {
                     IconButton(onClick = {
                         searchList.add(search.value)
-                        if(search.value == sneakers.name ||
-                            search.value == sneakers.gender ||
-                            search.value == sneakers.category){
+                        if(search.value == sneakers[0].name ||
+                            search.value == sneakers[0].gender ||
+                            search.value == sneakers[0].category){
                             isSearchCorrect.value = true
                         } else{
                             isSearchCorrect.value = false
@@ -129,7 +131,8 @@ fun SearchScreen(navController: NavController) {
                             .padding(start = 14.dp)) {
                         Icon(
                             painter = painterResource(R.drawable.search_icon),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = Color.Unspecified
                         )
                     }
                 },
@@ -140,7 +143,8 @@ fun SearchScreen(navController: NavController) {
                         modifier = Modifier
                             .padding(end = 15.dp)) {
                         Icon(painter = painterResource(R.drawable.microphone),
-                            contentDescription = null)
+                            contentDescription = null,
+                            tint = Color.Unspecified)
                     }
                 },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -168,8 +172,9 @@ fun SearchScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(13.dp),
                     verticalItemSpacing = 15.dp
                 ) {
-                    items(20) {_ ->
-                        ProductCard(navController)
+                    items(vm.sneakersList.size){s ->
+                        vm.sneakerId = s
+                        ProductCard(navController, vm)
                     }
                 }
             } else if (searchList.isNotEmpty()){
@@ -183,7 +188,8 @@ fun SearchScreen(navController: NavController) {
                                 search.value = searchList[s]
                             }){
                             Icon(painter = painterResource(R.drawable.time_icon),
-                                contentDescription = null)
+                                contentDescription = null,
+                                tint = Color.Unspecified)
                             Text(text = "${searchList[s]}",
                                 color = Color.Black,
                                 fontWeight = FontWeight(500),

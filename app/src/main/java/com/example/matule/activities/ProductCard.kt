@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +40,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.matule.R
+import com.example.matule.data.SneakersVM
 import com.example.matule.dataOperations.AddCart
 import com.example.matule.dataOperations.AddFavourite
 import com.example.matule.dataOperations.DeleteFavourite
@@ -54,38 +57,37 @@ import kotlinx.coroutines.launch
 @Composable
 fun PrevProdCard(){
     val n = rememberNavController()
-    ProductCard(n)
+    val sneakersList = SneakersVM()
+    ProductCard(n, sneakersList)
 }
-
-
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ProductCard(navController: NavController) {
+fun ProductCard(navController: NavController, vm: SneakersVM) {
     val cart_icon = remember{ mutableIntStateOf(R.drawable.plus)}
     val icon_id = remember { mutableIntStateOf(R.drawable.heart_icon) }
     val coroutine = rememberCoroutineScope()
     val card_photo = remember { mutableStateOf("") }
     val info = remember { mutableStateOf("") }
     val name = remember { mutableStateOf("") }
-    val price = remember { mutableStateOf(0f) }
+    val price = remember { mutableFloatStateOf(0f) }
     if (favourite.user_id == user.id){
         icon_id.value = R.drawable.favourite_heart_icon
     }
     if (cart.user_id == user.id){
         cart_icon.value = R.drawable.cart
     }
-    card_photo.value = sneakers.card_photo
-    info.value = sneakers.info
-    name.value = sneakers.name
-    price.value = sneakers.price
+    card_photo.value = sneakers[vm.sneakerId].card_photo
+    info.value = sneakers[vm.sneakerId].info
+    name.value = sneakers[vm.sneakerId].name
+    price.value = sneakers[vm.sneakerId].price
     Card(
         onClick = {
             navController.navigate(NavRoutes.Details.route)
         },
         modifier = Modifier
             .background(Color.White, shape = RoundedCornerShape(16.dp))
-            .size(160.dp, 182.dp),
+            .size(160.dp, 200.dp),
         shape = RoundedCornerShape(16.dp),
         colors =
             CardDefaults.cardColors(containerColor = Color.White)

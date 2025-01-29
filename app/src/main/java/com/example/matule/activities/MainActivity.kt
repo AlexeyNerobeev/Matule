@@ -48,6 +48,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule.R
+import com.example.matule.data.Sneakers
+import com.example.matule.data.SneakersVM
+import com.example.matule.getData.sneakers
 import com.example.matule.navigation.NavRoutes
 import com.example.matule.ui.theme.MatuleTheme
 
@@ -67,13 +70,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PrevMain(){
     val n = rememberNavController()
-    MainScreen(n)
+    val vm = SneakersVM()
+    MainScreen(n, vm)
 }
 
 var category : String = ""
 
     @Composable
-    fun MainScreen(navController: NavController){
+    fun MainScreen(navController: NavController, vm: SneakersVM){
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val font = FontFamily(
                 Font(
@@ -301,17 +305,13 @@ var category : String = ""
                         .padding(start = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
-                    item{
-                        ProductCard(navController)
+                    items(vm.sneakersList.size){s ->
+                        vm.sneakerId = s
+                        ProductCard(navController, vm)
                     }
-                    item{
-                        ProductCard(navController)
-                    }
-                    item{
-                        ProductCard(navController)
-                    }
-                    item{
-                        ProductCard(navController)
+                    items(sneakers.size){s ->
+                        vm.sneakerId = s
+                        ProductCard(navController, vm)
                     }
                 }
 
